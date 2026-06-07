@@ -1,0 +1,274 @@
+/* ==========================================================================
+   1. CONFIGURACIÓN BASE (REINICIO ULTRA-SEGURO)
+   ========================================================================== */
+* {
+    box-sizing: border-box !important;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+html, body {
+    width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden; /* Congela la pantalla completa, impide desborde */
+    background-color: #A9A8F5;
+}
+
+/* Esferas decorativas congeladas en el fondo */
+body::before, body::after {
+    content: '';
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: -1;
+    opacity: 0.5;
+    pointer-events: none;
+}
+body::before { top: -100px; right: 10%; background: #7C3AED; }
+body::after { bottom: -50px; left: 15%; background: #3B82F6; }
+
+/* ==========================================================================
+   2. ARQUITECTURA VERTICAL ESTABLE (HEADER - CONTENIDO - FOOTER)
+   ========================================================================== */
+.contenedor-principal {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+/* Barra Superior Sticky */
+.barra-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 0 30px;
+    height: 75px;
+    min-height: 75px;
+    max-height: 75px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
+    width: 100%;
+    z-index: 1000;
+}
+
+.logo { 
+    font-size: 24px; 
+    font-weight: 800; 
+    color: #111133; 
+    letter-spacing: 0.5px;
+}
+.logo i { color: #7C3AED; margin-right: 5px; }
+
+.menu-navegacion { 
+    display: flex; 
+    height: 100%; 
+    align-items: center; 
+}
+
+.btn-regresar-tech {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: #111133;
+    border-radius: 8px;
+    color: #FFFFFF !important;
+    font-size: 12.5px;
+    font-weight: 700;
+    text-decoration: none !important;
+    transition: background 0.2s ease;
+}
+.btn-regresar-tech:hover { background: #7C3AED; }
+
+/* Área de Contención Central */
+.contenido-pagina {
+    flex: 1;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Impide que el contenido empuje el footer */
+}
+
+/* ==========================================================================
+   3. DASHBOARD HÍBRIDO ASIMÉTRICO (INVENTARIO)
+   ========================================================================== */
+.dashboard-holografico-form {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr; /* Columna derecha más ancha para datos */
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(15, 23, 42, 0.04);
+    width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+}
+
+/* Panel Izquierdo: Diagnóstico */
+.panel-diagnostico-form {
+    background: rgba(15, 23, 42, 0.02);
+    padding: 30px;
+    border-right: 1px solid rgba(255, 255, 255, 0.25);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.status-badge-verde {
+    font-size: 10px;
+    font-weight: 800;
+    color: #15803D;
+    background: #DCFCE7;
+    padding: 4px 10px;
+    border-radius: 20px;
+    width: max-content;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+}
+
+.saldo-simulado {
+    font-size: 32px;
+    font-weight: 900;
+    color: #1E293B;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+}
+.saldo-simulado small {
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748B;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.descripcion-tech {
+    font-size: 13.5px;
+    color: #475569;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Panel Derecho: Lista con Scroll Interno Encapsulado */
+.panel-terminal-formulario {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: calc(100vh - 190px); /* Límite estricto anti-scroll de pantalla */
+    overflow-y: auto; /* Activa el scroll refinado solo aquí */
+    box-sizing: border-box;
+}
+
+/* Estilización de barra de scroll interna */
+.panel-terminal-formulario::-webkit-scrollbar { width: 6px; }
+.panel-terminal-formulario::-webkit-scrollbar-thumb {
+    background: rgba(17, 17, 51, 0.15);
+    border-radius: 4px;
+}
+
+.header-formulario { margin-bottom: 20px; }
+.header-formulario h3 { font-size: 18px; color: #0F172A; font-weight: 800; }
+.header-formulario p { font-size: 12.5px; color: #64748B; margin-top: 2px; }
+
+/* ==========================================================================
+   4. TABLA DE CONTROL DE ACTIVOS
+   ========================================================================== */
+.tabla-contenedor {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.tabla-tecnologia {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.4);
+    text-align: left;
+}
+
+.tabla-tecnologia th {
+    background: rgba(15, 23, 42, 0.05);
+    color: #0F172A;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.tabla-tecnologia td {
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #334155;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.tabla-tecnologia tr:last-child td {
+    border-bottom: none;
+}
+
+/* Indicador de impacto positivo */
+.impacto-positivo {
+    color: #16A34A;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ==========================================================================
+   5. PIE DE PÁGINA ULTRA-ESTABLE (CONGELADO)
+   ========================================================================== */
+.pie-pagina {
+    background-color: #111133;
+    color: #FFFFFF;
+    padding: 0 40px;
+    height: 75px;
+    min-height: 75px;
+    max-height: 75px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    width: 100%;
+    z-index: 1000;
+}
+
+.contenido-pie {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+.pie-izquierdo { font-size: 12.5px; line-height: 1.4; }
+.pie-derecho { color: #A2A2B5; font-size: 12.5px; }
+.correo-pie { color: #C4C3FF; font-weight: 500; }
+
+/* Responsive */
+@media (max-width: 768px) {
+    html, body, .contenedor-principal { height: auto; max-height: none; overflow: auto; }
+    .dashboard-holografico-form { grid-template-columns: 1fr; max-height: none; }
+    .panel-diagnostico-form { border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.25); }
+    .panel-terminal-formulario { max-height: none; overflow: visible; }
+    .pie-pagina, .barra-superior { height: auto; max-height: none; padding: 20px; }
+}

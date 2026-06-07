@@ -1,0 +1,81 @@
+/* ==========================================================================
+   CSS COMPLETO PARA PÁGINA DE AYUDA (Estilo Moderno con Marcos Blancos)
+   ========================================================================== */
+
+/* Contenedor principal de la lista de ayuda */
+.faq-container {
+    max-width: 850px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Título de la página */
+.faq-container h2 {
+    color: #FFFFFF;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 2rem;
+    text-shadow: 1px 2px 4px rgba(0,0,0,0.2);
+}
+
+/* El "Marco Blanco" para cada pregunta */
+.faq-item {
+    background: rgba(255, 255, 255, 0.95); /* Fondo casi blanco sólido */
+    margin-bottom: 20px;
+    border-radius: 15px;
+    border: 2px solid #FFFFFF; /* Marco blanco grueso */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Efecto al pasar el mouse por encima */
+.faq-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilo del texto que se ve siempre (la pregunta) */
+.faq-item summary {
+    padding: 22px;
+    font-weight: 700;
+    color: #111133;
+    cursor: pointer;
+    list-style: none; /* Elimina la flecha nativa */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+}
+
+/* Icono dinámico */
+.faq-item summary::after {
+    content: '\f067'; /* Icono '+' de FontAwesome */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: #7C3AED;
+    transition: transform 0.4s ease;
+}
+
+/* Cuando se abre el marco */
+.faq-item[open] summary::after {
+    transform: rotate(45deg); /* Gira a 'x' */
+}
+
+/* El contenido (la respuesta) */
+.faq-item p {
+    padding: 0 22px 22px 22px;
+    color: #444;
+    line-height: 1.7;
+    font-size: 1rem;
+    border-top: 1px solid #EEE; /* Línea divisoria sutil */
+    padding-top: 15px;
+    background-color: rgba(250, 250, 250, 0.5);
+    animation: fadeIn 0.4s ease;
+}
+
+/* Animación de entrada suave */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

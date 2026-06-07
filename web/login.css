@@ -1,0 +1,162 @@
+/* ==========================================================================
+   ESTILOS EXCLUSIVOS PARA LA PANTALLA DE LOGIN
+   ========================================================================== */
+
+/* 1. Mantenemos el área de contenido limpia y compatible con el flex base */
+.contenido-pagina {
+    width: 100%;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+/* 2. Bloque contenedor que se auto-centra vertical y horizontalmente */
+.form-wrapper { 
+    width: 100%; 
+    max-width: 450px; /* Tamaño ideal y compacto para un login */
+    margin: auto; 
+    box-sizing: border-box;
+    padding: 20px 0;
+}
+
+/* 3. Encabezado de bienvenida */
+.form-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.form-header h2 {
+    font-size: 26px;
+    color: #111133;
+    margin: 0 0 6px 0;
+    font-weight: 800;
+}
+
+.form-header p {
+    font-size: 14px;
+    color: #555577;
+    margin: 0;
+}
+
+/* 4. Tarjeta Glassmorphism idéntica a tus componentes estables */
+.card-form {
+    background-color: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    box-sizing: border-box;
+}
+
+/* Línea de acento superior estética de tu marca (Morado) */
+.card-form {
+    border-top: 5px solid #7C3AED;
+}
+
+/* 5. Grupos de inputs estructurados */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.input-group label {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #111111;
+    text-align: left;
+}
+
+/* Contenedor personalizado para iconos internos */
+.wrapper-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.wrapper-input i {
+    position: absolute;
+    left: 14px;
+    color: #888888;
+    font-size: 14px;
+    width: 16px;
+    text-align: center;
+    pointer-events: none;
+}
+
+.wrapper-input input {
+    width: 100%;
+    background-color: #EAEAEA;
+    border: 1px solid #D1D1D1;
+    border-radius: 6px;
+    padding: 12px 12px 12px 42px; /* Espacio para el icono a la izquierda */
+    font-size: 14px;
+    color: #333333;
+    outline: none;
+    min-height: 42px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.wrapper-input input:focus {
+    border-color: #7C3AED;
+    background-color: #F3F2FF;
+}
+
+/* 6. Alineación inferior del enlace y el botón */
+.login-footer-interface {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    gap: 15px;
+    width: 100%;
+}
+
+.txt-registro {
+    font-size: 13.5px;
+    color: #555577;
+    font-weight: 500;
+}
+
+.txt-registro a {
+    color: #7C3AED;
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.2s ease;
+}
+
+.txt-registro a:hover {
+    color: #5B21B6;
+    text-decoration: underline;
+}
+
+/* Botón de envío principal (Estilo Oscuro corporativo) */
+.btn-primary {
+    padding: 10px 26px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1A1926;
+    border: none;
+    color: #FFFFFF !important;
+    text-decoration: none !important;
+}
+
+.btn-primary:hover {
+    background-color: #2D2B3F;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

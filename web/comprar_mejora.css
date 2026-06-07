@@ -1,0 +1,405 @@
+/* ==========================================================================
+   1. CONFIGURACIÓN BASE Y REINICIO (RESET)
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body, html {
+    height: 100%;
+    background-color: #A9A8F5; /* Color base morado */
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* ==========================================================================
+   2. ESFERAS DE FONDO ANIMADAS (EFECTO INTERFAZ MODERNA)
+   ========================================================================== */
+body::before, body::after {
+    content: '';
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(100px); /* Difumina las esferas por completo */
+    z-index: -1;         /* Las manda al fondo */
+    opacity: 0.6;
+}
+
+body::before {
+    top: -100px;
+    right: 10%;
+    background: #7C3AED;
+    animation: flotar 10s ease-in-out infinite;
+}
+
+body::after {
+    bottom: -50px;
+    left: 15%;
+    background: #3B82F6;
+    animation: flotarInverso 12s ease-in-out infinite;
+}
+
+@keyframes flotar {
+    0%   { transform: translateY(0px); }
+    50%  { transform: translateY(-18px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes flotarInverso {
+    0%   { transform: translateY(0px); }
+    50%  { transform: translateY(18px); }
+    100% { transform: translateY(0px); }
+}
+
+/* ==========================================================================
+   3. ESTRUCTURA GENERAL Y BARRA SUPERIOR (GLASSMORPHISM)
+   ========================================================================== */
+.contenedor-principal {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.barra-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 0 30px;
+    height: 75px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Logotipo */
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: #111133;
+    letter-spacing: 0.5px;
+}
+
+.logo i {
+    color: #7C3AED;
+    margin-right: 5px;
+}
+
+/* Menú de navegación / Botón Volver */
+.menu-navegacion {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    gap: 2px;
+}
+
+.btn-regresar-tech {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(15, 23, 42, 0.05);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 8px;
+    color: #1E293B !important;
+    font-size: 12.5px;
+    font-weight: 700;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+}
+
+.btn-regresar-tech:hover {
+    background: #0F172A;
+    color: #FFFFFF !important;
+}
+
+/* ==========================================================================
+   4. ÁREA DE CONTENIDO (INTEGRACIÓN DEL DASHBOARD ASIMÉTRICO ANTI-SCROLL)
+   ========================================================================== */
+.contenido-pagina {
+    flex: 1;
+    width: 100%;
+    max-width: 980px; /* Ancho controlado para un encuadre perfecto */
+    margin: 0 auto;
+    padding: 25px 20px 25px 20px; /* Reducido para evitar el desborde vertical */
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Esfera central difuminada */
+.contenido-pagina::before {
+    content: '';
+    position: fixed;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: -1;
+    opacity: 0.3;
+    background: #EC4899;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+/* Contenedor Híbrido de Formulario */
+.dashboard-holografico-form {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(15, 23, 42, 0.04);
+    overflow: hidden;
+    width: 100%;
+    min-height: 380px;
+}
+
+/* ==========================================================================
+   5. PANEL IZQUIERDO: MONITOR DE PRESUPUESTO
+   ========================================================================== */
+.panel-diagnostico-form {
+    background: rgba(15, 23, 42, 0.02);
+    padding: 30px;
+    border-right: 1px solid rgba(255, 255, 255, 0.25);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.status-badge-verde {
+    font-size: 10px;
+    font-weight: 800;
+    color: #15803D;
+    background: #DCFCE7;
+    padding: 4px 10px;
+    border-radius: 20px;
+    width: max-content;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+}
+
+.saldo-simulado {
+    font-size: 34px;
+    font-weight: 900;
+    color: #1E293B;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+}
+
+.saldo-simulado small {
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748B;
+}
+
+.descripcion-tech {
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.5;
+    margin: 0 0 20px 0;
+}
+
+.monitor-impacto {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    padding: 12px 16px;
+    border-radius: 10px;
+}
+
+.label-grafico {
+    font-size: 10px;
+    font-weight: 800;
+    color: #64748B;
+    display: block;
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+}
+
+.indicadores-flex {
+    display: flex;
+    gap: 20px;
+}
+
+.indicadores-flex div {
+    font-size: 12.5px;
+    color: #334155;
+}
+
+.indicadores-flex strong {
+    color: #0F172A;
+}
+
+.style-v { color: #16A34A; margin-right: 2px;}
+.style-a { color: #2563EB; margin-right: 2px;}
+
+/* ==========================================================================
+   6. PANEL DERECHO: FORMULARIO DE ENTRADA TECH
+   ========================================================================== */
+.panel-terminal-formulario {
+    padding: 30px 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.header-formulario {
+    margin-bottom: 20px;
+}
+
+.header-formulario h3 {
+    font-size: 18px;
+    color: #0F172A;
+    font-weight: 800;
+    margin: 0 0 2px 0;
+}
+
+.header-formulario p {
+    font-size: 12px;
+    color: #64748B;
+    margin: 0;
+}
+
+.formulario-tech {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.grupo-input-tech {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.grupo-input-tech label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #334155;
+}
+
+.grupo-input-tech label i {
+    color: #64748B;
+    margin-right: 2px;
+}
+
+.wrapper-select-custom {
+    position: relative;
+    width: 100%;
+}
+
+.wrapper-select-custom select {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1E293B;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    border-radius: 8px;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.wrapper-select-custom::after {
+    content: '\f107';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748B;
+    font-size: 12px;
+    pointer-events: none;
+}
+
+.wrapper-select-custom select:focus {
+    border-color: #16A34A;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.08);
+}
+
+.btn-comprar-tech {
+    background: #16A34A;
+    border: none;
+    border-radius: 8px;
+    color: #FFFFFF;
+    padding: 12px;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 5px;
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.15);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-comprar-tech:hover {
+    background: #15803D;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(22, 163, 74, 0.25);
+}
+
+.btn-comprar-tech:active {
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   7. PIE DE PÁGINA
+   ========================================================================== */
+.pie-pagina {
+    background-color: #111133;
+    color: #FFFFFF;
+    padding: 25px 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.contenido-pie {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.pie-izquierdo {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.pie-derecho {
+    color: #A2A2B5;
+    font-size: 13px;
+}
+
+.correo-pie {
+    color: #C4C3FF;
+    font-weight: 500;
+}

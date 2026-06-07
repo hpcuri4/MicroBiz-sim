@@ -1,0 +1,243 @@
+/* ==========================================================================
+   7. SECCIÓN DE SIMULACIÓN - BALANCEADO EXACTO (ESTILO CRÉDITO)
+   ========================================================================== */
+
+/* Contenedor estructural sutil */
+.simulacion-wrapper-interno {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Mismo respiro que tiene Crédito */
+    box-sizing: border-box;
+}
+
+/* --- ENCABEZADO TITULO --- */
+.simulacion-encabezado {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.etiqueta-seccion {
+    display: block;
+    color: #3F3D82;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.simulacion-encabezado h1 {
+    font-size: 32px;
+    color: #111133;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+/* --- MÉTRICAS SUPERIORES (Copia exacta de las tarjetas de crédito) --- */
+.metricas-simulacion {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.metrica {
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 12px;
+    padding: 16px 20px; /* Padding exacto de credito-metrica */
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    box-sizing: border-box;
+}
+
+.metrica i {
+    font-size: 22px;
+    color: #7C3AED;
+}
+
+/* Estructura interna de textos en la métrica */
+.metrica strong {
+    font-size: 18px;
+    font-weight: 800;
+    color: #111133;
+    display: block;
+    line-height: 1.1;
+}
+
+.metrica span {
+    font-size: 11px;
+    color: #475569;
+    font-weight: 600;
+    display: block;
+    margin-top: 2px;
+}
+
+/* --- GRID INFERIOR (Paneles de Cristal) --- */
+.simulacion-grid {
+    display: flex;
+    gap: 24px;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: start;
+}
+
+.panel-simulacion {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+    flex: 1;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.panel-simulacion h2 {
+    font-size: 20px;
+    color: #111133;
+    font-weight: 700;
+    text-align: center;
+    margin: 0 0 5px 0;
+}
+
+.panel-scroll-interno {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+/* --- BANNER DE ALERTA INTERNO (Estilo credito-aviso) --- */
+.alerta-evento {
+    background: rgba(239, 246, 255, 0.6); /* Tono azulado sutil como el de solicitar préstamo */
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 10px;
+    display: flex;
+    gap: 14px;
+    padding: 14px;
+    box-sizing: border-box;
+    width: 100%;
+    align-items: flex-start;
+}
+
+.icono-alerta i {
+    color: #3B82F6;
+    font-size: 16px;
+    margin-top: 2px;
+}
+
+.texto-alerta h2 {
+    font-size: 13.5px;
+    color: #111133;
+    font-weight: 700;
+    margin: 0 0 3px 0;
+}
+
+.texto-alerta p {
+    font-size: 12px;
+    color: #1e3a8a;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.texto-alerta span {
+    display: none; /* Quitamos texto redundante */
+}
+
+/* --- TARJETAS INTERNAS MINI --- */
+.evento-card,
+.decision-item {
+    background: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+    padding: 14px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Para decisiones que tienen botón al lado */
+.decision-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.decision-card {
+    flex: 1;
+}
+
+.evento-card h3,
+.decision-card h3 {
+    font-size: 13.5px;
+    color: #111133;
+    margin: 0 0 4px 0;
+    font-weight: 700;
+}
+
+.evento-card p,
+.decision-card p {
+    font-size: 12.5px;
+    color: #334155;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.evento-card strong {
+    display: block;
+    font-size: 11px;
+    color: #7C3AED;
+    margin-top: 6px;
+    font-weight: 700;
+}
+
+/* --- BOTONES (Estilo exacto a Crédito) --- */
+.btn-decision {
+    background: #111133;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s ease;
+}
+
+.btn-decision:hover {
+    background: #7C3AED;
+}
+
+.btn-secundario {
+    background: #111133;
+    color: white !important;
+    border: none;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    align-self: flex-start;
+    margin-top: 5px;
+}
+
+.btn-secundario:hover {
+    background: #7C3AED;
+}

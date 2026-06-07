@@ -1,0 +1,215 @@
+/* ==========================================================================
+   1. LOGOTIPO Y BARRA SUPERIOR
+   ========================================================================== */
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: #111133;
+    letter-spacing: 0.5px;
+}
+
+.logo i {
+    color: #7C3AED;
+    margin-right: 5px;
+}
+
+/* Menú de navegación */
+.menu-navegacion {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    gap: 2px; /* Espaciado optimizado para las 9 opciones */
+}
+
+/* ==========================================================================
+   2. CONTROL DE ENLACES DEL MENÚ DE NAVEGACIÓN
+   ========================================================================== */
+.opcion {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* Limpieza absoluta de estados de enlaces de la barra */
+.opcion a, 
+.opcion a:visited, 
+.opcion a:active, 
+.opcion a:focus {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;               /* Compacto para que quepan las 9 opciones limpiamente */
+    color: #222244 !important;        /* Forzar color gris oscuro */
+    text-decoration: none !important; /* Quita el subrayado morado/azul por completo */
+    font-size: 13px;                  /* Ajustado para balance de pantalla */
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+    outline: none;
+}
+
+/* Iconos de las pestañas superiores */
+.opcion a i {
+    margin-right: 5px;
+    font-size: 14px;
+    color: #7C3AED;
+    transition: color 0.25s ease;
+}
+
+/* Efectos Hover en Pestañas */
+.opcion:hover a {
+    background-color: rgba(255, 255, 255, 0.4);
+    color: #111133 !important;
+    text-decoration: none !important;
+}
+
+.opcion:hover a i {
+    color: #111133;
+}
+
+/* Línea indicadora animada inferior en Pestañas */
+.opcion::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    right: 10px;
+    height: 3px;
+    background-color: #7C3AED;
+    transform: scaleX(0);
+    transition: transform 0.25s ease;
+    border-radius: 3px 3px 0 0;
+}
+
+.opcion:hover::after {
+    transform: scaleX(1);
+}
+
+/* Pestaña Seleccionada Activa */
+.opcion.activa a,
+.opcion.activa a:visited {
+    color: #111133 !important;
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    text-decoration: none !important;
+}
+
+.opcion.activa::after {
+    transform: scaleX(1); /* Deja la barra fija abajo de la pestaña activa */
+}
+
+/* ==========================================================================
+   3. ESTRUCTURA CENTRAL Y ALINEACIÓN DEL MÓDULO
+   ========================================================================== */
+
+/* Contenedor unificado que agrupa el título y el tablero */
+.contenido-pagina {
+    flex: 1;
+    padding: 40px;
+    position: relative;
+}
+
+/* Esfera central difuminada */
+.contenido-pagina::before {
+    content: '';
+    position: fixed;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: -1;
+    opacity: 0.3;
+    background: #EC4899;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+
+/* Diseño del Bloque de Encabezado Centrado */
+.modulo-header {
+    text-align: center;            /* Centra perfectamente el h2 de Negocio */
+    margin-bottom: 40px;           /* Separación limpia antes de las tarjetas */
+    width: 100%;
+}
+
+.modulo-header h2 {
+    font-size: 32px;
+    color: #111133;
+    font-weight: 800;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.5px;
+}
+
+.modulo-header p {
+    font-size: 14.5px;
+    color: #555577;
+    margin: 0;
+}
+
+/* ==========================================================================
+   4. TABLERO DE TARJETAS DE CONTROL (GLASSMORPHISM)
+   ========================================================================== */
+.panel-control-negocio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;               /* Permite que colapsen estéticamente en pantallas chicas */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.tarjeta-control {
+    background-color: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px); /* Soporte para Safari */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    padding: 35px 20px;
+    width: 210px;
+    min-height: 160px;
+    box-sizing: border-box;
+    
+    /* Centrado interno perfecto de iconos y textos */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+    text-decoration: none !important;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+                background-color 0.25s ease, 
+                box-shadow 0.25s ease;
+    cursor: pointer;
+}
+
+/* Efecto Hover al pasar el cursor sobre las tarjetas */
+.tarjeta-control:hover {
+    transform: translateY(-6px);
+    background-color: rgba(255, 255, 255, 0.45);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+}
+
+/* Tamaño y animación de los iconos integrados */
+.tarjeta-control i {
+    font-size: 42px;
+    margin-bottom: 16px;
+    display: block;
+    transition: transform 0.25s ease;
+}
+
+.tarjeta-control:hover i {
+    transform: scale(1.12); /* Sutil efecto de agrandamiento del icono al hacer hover */
+}
+
+/* Control del texto inferior del botón */
+.tarjeta-control span {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    color: #111133 !important; /* Forzar el color oscuro institucional */
+    letter-spacing: -0.2px;
+}

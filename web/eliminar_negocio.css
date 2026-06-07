@@ -1,0 +1,170 @@
+/* ==========================================================================
+   ESTILOS EXCLUSIVOS PARA ELIMINAR NEGOCIO (ESTRUCTURA INTEGRAL)
+   ========================================================================== */
+
+/* 1. Mantenemos el área de contenido limpia sin romper el flujo del footer */
+.contenido-pagina {
+    width: 100%;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+/* 2. Bloque contenedor que se auto-centra horizontalmente en la pantalla */
+.form-wrapper { 
+    width: 100%; 
+    max-width: 500px; 
+    margin: 40px auto; /* 40px arriba/abajo para separar de barra y footer, auto centra los lados */
+    box-sizing: border-box;
+}
+
+/* 3. Encabezado de la sección */
+.form-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.form-header h2 {
+    font-size: 24px;
+    color: #111133;
+    margin: 0 0 5px 0;
+    font-weight: 800;
+}
+
+.form-header p {
+    font-size: 14px;
+    color: #555577;
+    margin: 0;
+}
+
+/* 4. Tarjeta contenedora Glassmorphism (Usa tus mismas variables de transparencia) */
+.card-form {
+    background-color: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+/* Línea de acento de peligro sobre la tarjeta */
+.card-form.border-danger {
+    border-top: 5px solid #EF4444;
+}
+
+/* 5. Icono de advertencia triangular */
+.warning-icon-container {
+    text-align: center;
+    font-size: 3.5rem;
+    color: #F59E0B; /* Tono Ámbar */
+    margin-bottom: 5px;
+}
+
+/* 6. Grupo de control de inputs (Estilo idéntico a tu crear negocio) */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.input-group label {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #111111;
+    text-align: left;
+}
+
+/* Dropdown estilizado a la arquitectura de tu app */
+.input-group select {
+    width: 100%;
+    background-color: #EAEAEA;
+    border: 1px solid #D1D1D1;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #333333;
+    outline: none;
+    min-height: 40px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.input-group select:focus {
+    border-color: #7C3AED;
+    background-color: #F3F2FF;
+}
+
+/* 7. Recuadro informativo de riesgo */
+.warning-text {
+    background-color: #FEF2F2;
+    color: #991B1B;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    border-left: 4px solid #EF4444;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+/* 8. Fila de botones inferiores alineados a la derecha */
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+/* Botón Cancelar */
+.btn-secondary {
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #EAEAEA;
+    border: 1px solid #D1D1D1;
+    color: #333333 !important;
+    text-decoration: none !important;
+}
+
+.btn-secondary:hover {
+    background-color: #DBDBDB;
+}
+
+/* Botón Eliminar de acción rápida */
+.btn-danger {
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #EF4444;
+    border: none;
+    color: #FFFFFF !important;
+    text-decoration: none !important;
+}
+
+.btn-danger:hover {
+    background-color: #DC2626;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}

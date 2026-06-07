@@ -1,0 +1,250 @@
+/* ==========================================================================
+   1. CONFIGURACIÓN BASE Y REINICIO (RESET)
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body, html {
+    height: 100%;
+    background-color: #A9A8F5; /* Color base morado */
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* ==========================================================================
+   2. ESFERAS DE FONDO ANIMADAS (EFECTO INTERFAZ MODERNA)
+   ========================================================================== */
+/* Esferas decorativas flotantes detrás del contenido general */
+body::before, body::after {
+    content: '';
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(100px); /* Difumina las esferas por completo */
+    z-index: -1;         /* Las manda al fondo del todo */
+    opacity: 0.6;
+}
+
+/* Esfera superior morada brillante */
+body::before {
+    top: -100px;
+    right: 10%;
+    background: #7C3AED;
+    animation: flotar 10s ease-in-out infinite;
+}
+
+/* Esfera inferior azul comercial */
+body::after {
+    bottom: -50px;
+    left: 15%;
+    background: #3B82F6;
+    animation: flotarInverso 12s ease-in-out infinite;
+}
+
+/* Animaciones de flotamiento suave */
+@keyframes flotar {
+    0%   { transform: translateY(0px); }
+    50%  { transform: translateY(-18px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes flotarInverso {
+    0%   { transform: translateY(0px); }
+    50%  { transform: translateY(18px); }
+    100% { transform: translateY(0px); }
+}
+
+/* ==========================================================================
+   3. ESTRUCTURA GENERAL Y BARRA SUPERIOR (GLASSMORPHISM)
+   ========================================================================== */
+.contenedor-principal {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    position: relative;
+    z-index: 1; /* Queda por encima de las esferas traseras */
+}
+
+.barra-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    /* Efecto translúcido esmerilado */
+    background-color: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px); /* Compatibilidad Safari */
+    
+    padding: 0 40px;
+    height: 75px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* Borde brillante de cristal */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Logotipo */
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: #111133;
+    letter-spacing: 0.5px;
+}
+
+.logo i {
+    color: #7C3AED;
+    margin-right: 5px;
+}
+
+/* Menú de navegación */
+.menu-navegacion {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    gap: 4px; /* Espaciado compacto para albergar las 8 opciones de forma cómoda */
+}
+
+/* ==========================================================================
+   4. CONTROL DE ENLACES (EVITAR ESTILOS AZULES PREVISTOS EN TU CAPTURA)
+   ========================================================================== */
+.opcion {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* Forzar a que los enlaces ignoren por completo los subrayados y colores por defecto del navegador */
+.opcion a, 
+.opcion a:visited, 
+.opcion a:active, 
+.opcion a:focus {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;        
+    color: #222244 !important;        /* Forzar color gris oscuro discreto */
+    text-decoration: none !important; /* Destruye el subrayado azul o morado de raíz */
+    font-size: 13.5px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+    outline: none;
+}
+
+/* Iconos de Font Awesome dentro de las pestañas */
+.opcion a i {
+    margin-right: 6px;
+    font-size: 15px;
+    color: #7C3AED;
+    transition: color 0.25s ease;
+}
+
+/* Efectos Hover (Al pasar el cursor sobre la pestaña) */
+.opcion:hover a {
+    background-color: rgba(255, 255, 255, 0.4); /* Reflejo blanco brillante */
+    color: #111133 !important;
+    text-decoration: none !important;
+}
+
+.opcion:hover a i {
+    color: #111133;
+}
+
+/* Línea indicadora animada inferior */
+.opcion::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 12px;
+    right: 12px;
+    height: 3px;
+    background-color: #7C3AED;
+    transform: scaleX(0);
+    transition: transform 0.25s ease;
+    border-radius: 3px 3px 0 0;
+}
+
+.opcion:hover::after {
+    transform: scaleX(1); /* Muestra la línea al hacer hover */
+}
+
+/* ==========================================================================
+   5. COMPORTAMIENTO PARA LA PESTAÑA SELECCIONADA (ACTIVA)
+   ========================================================================== */
+/* Cuando agregues la palabra "activa" al div de la opción correspondiente en tu JSP */
+.opcion.activa a,
+.opcion.activa a:visited {
+    color: #111133 !important;
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    text-decoration: none !important;
+}
+
+.opcion.activa::after {
+    transform: scaleX(1); /* Mantiene la línea morada fija en la página actual */
+}
+
+/* ==========================================================================
+   6. ÁREA DE CONTENIDO Y PIE DE PÁGINA
+   ========================================================================== */
+/* Área de contenido general (Tu lienzo morado para meter módulos) */
+.contenido-pagina {
+    flex: 1;
+    padding: 40px 40px;
+    position: relative;
+}
+
+/* Esfera central difuminada en el área de desarrollo */
+.contenido-pagina::before {
+    content: '';
+    position: fixed;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: -1;
+    opacity: 0.3;
+    background: #EC4899; /* Toque rosa sutil */
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+/* Pie de página sólido */
+.pie-pagina {
+    background-color: #111133;
+    color: #FFFFFF;
+    padding: 25px 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.contenido-pie {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.pie-izquierdo {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.pie-derecho {
+    color: #A2A2B5;
+    font-size: 13px;
+}
+
+.correo-pie {
+    color: #C4C3FF;
+    font-weight: 500;
+}

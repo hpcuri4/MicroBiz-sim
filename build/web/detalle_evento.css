@@ -1,0 +1,175 @@
+.contenedor-principal {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.barra-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 0 30px;
+    height: 75px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Logotipo */
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: #111133;
+    letter-spacing: 0.5px;
+}
+
+.logo i {
+    color: #7C3AED;
+    margin-right: 5px;
+}
+
+/* Menú de navegación */
+.menu-navegacion {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    gap: 2px; /* Espaciado optimizado para 9 opciones */
+}
+/* 2. Bloque contenedor que se auto-centra horizontalmente en la pantalla */
+.form-wrapper { 
+    width: 100%; 
+    max-width: 550px; 
+    margin: auto; /* Mágicamente centrado de forma vertical y horizontal dentro del espacio disponible */
+    box-sizing: border-box;
+    padding: 20px 0;
+}
+/* 3. Encabezado externo de la sección */
+.form-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.form-header h2 {
+    font-size: 24px;
+    color: #111133;
+    margin: 0 0 5px 0;
+    font-weight: 800;
+}
+
+.form-header p {
+    font-size: 14px;
+    color: #555577;
+    margin: 0;
+}
+
+/* 4. Tarjeta del Evento (Glassmorphism idéntico a tu crear/modificar negocio) */
+.card-event {
+    background-color: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    box-sizing: border-box;
+}
+
+/* Línea de acento superior temática (usamos el morado brillante de tu app) */
+.card-event.border-event {
+    border-top: 5px solid #7C3AED;
+}
+
+/* 5. Contenedor del Icono del Evento */
+.event-icon-container {
+    text-align: center;
+    font-size: 3.5rem;
+    color: #7C3AED; /* Morado base */
+    margin-bottom: 5px;
+}
+
+/* 6. Detalles e impacto del evento */
+.event-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: #111133;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.event-description {
+    font-size: 14.5px;
+    color: #333333;
+    line-height: 1.6;
+    text-align: justify;
+    background-color: rgba(255, 255, 255, 0.4);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* 7. Recuadro destacado con las consecuencias financieras/métricas */
+.event-impact-box {
+    background-color: #F3F2FF; /* Fondo morado muy claro, similar al focus */
+    border-left: 4px solid #7C3AED;
+    color: #1A1926;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.event-impact-box ul {
+    margin: 8px 0 0 20px;
+    padding: 0;
+}
+
+.event-impact-box li {
+    margin-bottom: 4px;
+}
+
+/* 8. Fila de botones inferiores alineados a la derecha */
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+
+/* Botón Primario (Aceptar/Tomar acción - Estilo Oscuro) */
+.btn-primary {
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1A1926;
+    border: none;
+    color: #FFFFFF !important;
+    text-decoration: none !important;
+}
+
+.btn-primary:hover {
+    background-color: #2D2B3F;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

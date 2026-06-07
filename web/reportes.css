@@ -1,0 +1,107 @@
+/* Asegura que el contenedor principal use todo el espacio y centre su contenido */
+.contenido-pagina {
+    flex: 1;
+    display: flex;
+    align-items: center;      /* Centrado vertical */
+    justify-content: center;   /* Centrado horizontal */
+    padding: 40px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* El bloque contenedor que envuelve los títulos y las tarjetas */
+.reportes-container {
+    width: 100%;
+    max-width: 650px;         /* Limita el ancho para que mantenga una proporción elegante */
+    margin: 0 auto;           /* Refuerza el centrado matemático horizontal */
+    display: flex;
+    flex-direction: column;
+    align-items: center;      /* Alinea los títulos y textos al centro de su propio bloque */
+    text-align: center;       /* Centra los textos decorativos */
+}
+
+/* Lista que contiene las tarjetas de los negocios */
+.negocios-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;                /* Define una separación limpia entre tarjetas sin usar <br> */
+    width: 100%;              /* Se expande al ancho máximo del contenedor (650px) */
+}
+
+/* Estilo para cada tarjeta individual (Efecto Glassmorphism / Tarjeta Blanca) */
+.card-negocio {
+    background: white;
+    border-radius: 16px;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between; /* Manda la info a la izquierda y el botón a la derecha */
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Sombra suave idéntica al resto de la app */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Alineación interna del texto de la tarjeta */
+.card-negocio .info {
+    text-align: left;         /* El texto interno de la tarjeta se queda estético a la izquierda */
+}
+
+.card-negocio h3 {
+    margin: 0 0 5px 0;
+    color: #111133;
+    font-size: 1.1rem;
+}
+
+/* Estilo para las etiquetas de estado */
+.status-activo {
+    background-color: #DCFCE7;
+    color: #166534;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* Asegurar el diseño del botón sin subrayados raros */
+.card-negocio .btn-primary {
+    background-color: #7C3AED;
+    color: white !important;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none !important;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+}
+
+.card-negocio .btn-primary:hover {
+    background-color: #6D28D9;
+}
+
+.kpi-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.kpi-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.kpi-card .label { display: block; color: #666; font-size: 0.9rem; }
+.kpi-card .value { display: block; font-size: 1.5rem; font-weight: bold; color: #333; margin-top: 5px; }
+
+/* Resaltado para la Utilidad */
+.kpi-card.highlight { border: 2px solid #7C3AED; }
+
+.chart-container {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}

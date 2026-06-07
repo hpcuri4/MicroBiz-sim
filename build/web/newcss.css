@@ -1,0 +1,241 @@
+/* ==========================================================================
+   1. CONFIGURACIÓN BASE Y REINICIO (RESET)
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body, html {
+    height: 100%;
+    background-color: #A9A8F5; /* Color base morado */
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* ==========================================================================
+   2. ESFERAS DE FONDO ANIMADAS (EFECTO INTERFAZ MODERNA)
+   ========================================================================== */
+body::before, body::after {
+    content: '';
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(100px); /* Difumina las esferas por completo */
+    z-index: -1;         /* Las manda al fondo */
+    opacity: 0.6;
+}
+
+body::before {
+    top: -100px;
+    right: 10%;
+    background: #7C3AED;
+    animation: flotar 10s ease-in-out infinite;
+}
+
+body::after {
+    bottom: -50px;
+    left: 15%;
+    background: #3B82F6;
+    animation: flotarInverso 12s ease-in-out infinite;
+}
+
+@keyframes flotar {
+    0%   { transform: translateY(0px); }
+    50%  { transform: translateY(-18px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes flotarInverso {
+    0%   { transform: translateY(0px); }
+    50%  { transform: translateY(18px); }
+    100% { transform: translateY(0px); }
+}
+
+/* ==========================================================================
+   3. ESTRUCTURA GENERAL Y BARRA SUPERIOR (GLASSMORPHISM)
+   ========================================================================== */
+.contenedor-principal {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.barra-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 0 30px;
+    height: 75px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Logotipo */
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: #111133;
+    letter-spacing: 0.5px;
+}
+
+.logo i {
+    color: #7C3AED;
+    margin-right: 5px;
+}
+
+/* Menú de navegación */
+.menu-navegacion {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    gap: 2px; /* Espaciado optimizado para 9 opciones */
+}
+
+/* ==========================================================================
+   4. CONTROL DE ENLACES (ELIMINA EL SUBRAYADO AZUL / MORADO)
+   ========================================================================== */
+.opcion {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* Limpieza absoluta de estados de enlaces */
+.opcion a, 
+.opcion a:visited, 
+.opcion a:active, 
+.opcion a:focus {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;               /* Compacto para que quepan las 9 opciones limpiamente */
+    color: #222244 !important;        /* Forzar color gris oscuro */
+    text-decoration: none !important; /* Quita el subrayado morado/azul por completo */
+    font-size: 13px;                  /* Ajustado para balance de pantalla */
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+    outline: none;
+}
+
+/* Iconos de las pestañas */
+.opcion a i {
+    margin-right: 5px;
+    font-size: 14px;
+    color: #7C3AED;
+    transition: color 0.25s ease;
+}
+
+/* Efectos Hover */
+.opcion:hover a {
+    background-color: rgba(255, 255, 255, 0.4);
+    color: #111133 !important;
+    text-decoration: none !important;
+}
+
+.opcion:hover a i {
+    color: #111133;
+}
+
+/* Línea indicadora animada inferior */
+.opcion::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    right: 10px;
+    height: 3px;
+    background-color: #7C3AED;
+    transform: scaleX(0);
+    transition: transform 0.25s ease;
+    border-radius: 3px 3px 0 0;
+}
+
+.opcion:hover::after {
+    transform: scaleX(1);
+}
+
+/* ==========================================================================
+   5. COMPORTAMIENTO PARA LA PESTAÑA SELECCIONADA (ACTIVA)
+   ========================================================================== */
+.opcion.activa a,
+.opcion.activa a:visited {
+    color: #111133 !important;
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    text-decoration: none !important;
+}
+
+.opcion.activa::after {
+    transform: scaleX(1); /* Deja la barra fija abajo de la pestaña activa */
+}
+
+/* ==========================================================================
+   6. ÁREA DE CONTENIDO Y PIE DE PÁGINA
+   ========================================================================== */
+.contenido-pagina {
+    flex: 1;
+    padding: 40px;
+    position: relative;
+}
+
+/* Esfera central difuminada */
+.contenido-pagina::before {
+    content: '';
+    position: fixed;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: -1;
+    opacity: 0.3;
+    background: #EC4899;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+/* Pie de página */
+.pie-pagina {
+    background-color: #111133;
+    color: #FFFFFF;
+    padding: 25px 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.contenido-pie {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.pie-izquierdo {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.pie-derecho {
+    color: #A2A2B5;
+    font-size: 13px;
+}
+
+.correo-pie {
+    color: #C4C3FF;
+    font-weight: 500;
+}

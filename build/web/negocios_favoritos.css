@@ -1,0 +1,188 @@
+/* ==========================================================================
+   MICROBIZ SIM - SECCIÓN INTERNA DE NEGOCIOS FAVORITOS
+   ========================================================================== */
+
+:root {
+    --bg-tarjeta-fav: rgba(30, 27, 58, 0.45);
+    --bg-input-fav: rgba(18, 15, 36, 0.7);
+    --border-cristal-fav: rgba(255, 255, 255, 0.08);
+    --texto-secundario-fav: #a9a8f5;
+    
+    --color-alta-fav: #ff4757;
+    --color-radar-fav: #2ed573;
+    --color-purpura-fav: #747dff;
+}
+
+/* El contenedor del contenido lo dejamos limpio para que no rompa tu layout */
+.contenido-pagina {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.header-favoritos h2 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+}
+
+.header-favoritos p {
+    color: var(--texto-secundario-fav);
+    margin: 0 0 25px 0;
+    font-size: 14px;
+}
+
+/* ==========================================================================
+   TARJETAS ESTILO CRISTAL (Para el Formulario y los Favoritos)
+   ========================================================================== */
+.tarjeta-cristal-favorito {
+    background: var(--bg-tarjeta-fav);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--border-cristal-fav);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+/* Inputs del Formulario */
+.tarjeta-cristal-favorito select {
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.tarjeta-cristal-favorito select:focus {
+    border-color: var(--color-purpura-fav) !important;
+    box-shadow: 0 0 8px rgba(116, 125, 255, 0.3);
+}
+
+.btn-añadir-fav {
+    border: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-añadir-fav:not(:disabled):hover {
+    transform: translateY(-1px);
+    filter: brightness(1.1);
+}
+
+/* ==========================================================================
+   GRID DE LAS COLUMNAS (Alta vs Baja)
+   ========================================================================== */
+.grid-favoritos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .grid-favoritos {
+        grid-template-columns: 1fr;
+    }
+}
+
+.columna-favoritos {
+    background: rgba(10, 8, 20, 0.3);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px dashed rgba(255, 255, 255, 0.05);
+}
+
+.columna-favoritos h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+}
+
+/* Indicadores de color para cada columna */
+.columna-favoritos:nth-child(1) h3 {
+    color: var(--color-alta-fav);
+    border-bottom: 2px solid var(--color-alta-fav);
+}
+
+.columna-favoritos:nth-child(2) h3 {
+    color: var(--color-radar-fav);
+    border-bottom: 2px solid var(--color-radar-fav);
+}
+
+.contenedor-tarjetas {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Tarjetas individuales de cada negocio guardado */
+.columna-favoritos .tarjeta-cristal-favorito {
+    padding: 18px;
+}
+
+.columna-favoritos .tarjeta-cristal-favorito:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.columna-favoritos .tarjeta-cristal-favorito h4 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+}
+
+.columna-favoritos .tarjeta-cristal-favorito p {
+    margin: 4px 0;
+    font-size: 13px;
+    color: var(--texto-secundario-fav);
+}
+
+/* Botones de acción inferiores */
+.acciones-tarjeta-fav {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.btn-fav {
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+/* Botón Cambiar Prioridad */
+.btn-cambiar-prioridad {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.columna-favoritos:nth-child(1) .btn-cambiar-prioridad:hover {
+    background: var(--color-radar-fav);
+    color: #000000;
+    border-color: var(--color-radar-fav);
+}
+
+.columna-favoritos:nth-child(2) .btn-cambiar-prioridad:hover {
+    background: var(--color-alta-fav);
+    color: #ffffff;
+    border-color: var(--color-alta-fav);
+}
+
+/* Botón Eliminar / Quitar */
+.btn-eliminar-fav {
+    background: rgba(255, 71, 87, 0.1);
+    color: var(--color-alta-fav);
+    border: 1px solid rgba(255, 71, 87, 0.2);
+}
+
+.btn-eliminar-fav:hover {
+    background: var(--color-alta-fav);
+    color: #ffffff;
+}

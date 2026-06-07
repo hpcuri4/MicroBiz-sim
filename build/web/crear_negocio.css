@@ -1,0 +1,476 @@
+/* ==========================================================================
+   1. CONFIGURACIÓN BASE Y REINICIO (RESET)
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body, html {
+    height: 100%;
+    background-color: #A9A8F5; /* Color base morado */
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* ==========================================================================
+   2. ESFERAS DE FONDO ANIMADAS (EFECTO INTERFAZ MODERNA)
+   ========================================================================== */
+body::before, body::after {
+    content: '';
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(100px); /* Difumina las esferas por completo */
+    z-index: -1;         /* Las manda al fondo */
+    opacity: 0.6;
+}
+
+body::before {
+    top: -100px;
+    right: 10%;
+    background: #7C3AED;
+    animation: flotar 10s ease-in-out infinite;
+}
+
+body::after {
+    bottom: -50px;
+    left: 15%;
+    background: #3B82F6;
+    animation: flotarInverso 12s ease-in-out infinite;
+}
+
+@keyframes flotar {
+    0%   { transform: translateY(0px); }
+    50%  { transform: translateY(-18px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes flotarInverso {
+    0%   { transform: translateY(0px); }
+    50%  { transform: translateY(18px); }
+    100% { transform: translateY(0px); }
+}
+
+/* ==========================================================================
+   3. ESTRUCTURA GENERAL Y BARRA SUPERIOR (GLASSMORPHISM)
+   ========================================================================== */
+.contenedor-principal {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.barra-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 0 30px;
+    height: 75px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Logotipo */
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: #111133;
+    letter-spacing: 0.5px;
+}
+
+.logo i {
+    color: #7C3AED;
+    margin-right: 5px;
+}
+
+/* Menú de navegación */
+.menu-navegacion {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    gap: 2px; /* Espaciado optimizado para 9 opciones */
+}
+
+/* ==========================================================================
+   4. CONTROL DE ENLACES (ELIMINA EL SUBRAYADO AZUL / MORADO)
+   ========================================================================== */
+.opcion {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* Limpieza absoluta de estados de enlaces */
+.opcion a, 
+.opcion a:visited, 
+.opcion a:active, 
+.opcion a:focus {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;               /* Compacto para que quepan las 9 opciones limpiamente */
+    color: #222244 !important;        /* Forzar color gris oscuro */
+    text-decoration: none; /* Quita el subrayado morado/azul por completo */
+    font-size: 13px;                  /* Ajustado para balance de pantalla */
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+    outline: none;
+}
+
+/* Iconos de las pestañas */
+.opcion a i {
+    margin-right: 5px;
+    font-size: 14px;
+    color: #7C3AED;
+    transition: color 0.25s ease;
+}
+
+/* Efectos Hover */
+.opcion:hover a {
+    background-color: rgba(255, 255, 255, 0.4);
+    color: #111133 !important;
+    text-decoration: none !important;
+}
+
+.opcion:hover a i {
+    color: #111133;
+}
+
+/* Línea indicadora animada inferior */
+.opcion::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    right: 10px;
+    height: 3px;
+    background-color: #7C3AED;
+    transform: scaleX(0);
+    transition: transform 0.25s ease;
+    border-radius: 3px 3px 0 0;
+}
+
+.opcion:hover::after {
+    transform: scaleX(1);
+}
+
+/* ==========================================================================
+   5. COMPORTAMIENTO PARA LA PESTAÑA SELECCIONADA (ACTIVA)
+   ========================================================================== */
+.opcion.activa a,
+.opcion.activa a:visited {
+    color: #111133 !important;
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    text-decoration: none !important;
+}
+
+.opcion.activa::after {
+    transform: scaleX(1); /* Deja la barra fija abajo de la pestaña activa */
+}
+
+/* ==========================================================================
+   6. ÁREA DE CONTENIDO Y PIE DE PÁGINA
+   ========================================================================== */
+.contenido-pagina {
+    flex: 1;
+    padding: 40px;
+    position: relative;
+}
+
+/* Esfera central difuminada */
+.contenido-pagina::before {
+    content: '';
+    position: fixed;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: -1;
+    opacity: 0.3;
+    background: #EC4899;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+/* Pie de página */
+.pie-pagina {
+    background-color: #111133;
+    color: #FFFFFF;
+    padding: 25px 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.contenido-pie {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.pie-izquierdo {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.pie-derecho {
+    color: #A2A2B5;
+    font-size: 13px;
+}
+
+.correo-pie {
+    color: #C4C3FF;
+    font-weight: 500;
+}
+/* ==========================================================================
+   ESTILOS PARA LA SECCIÓN "CREAR NEGOCIO" (BASADO EN TU IMAGEN)
+   ========================================================================== */
+.contenedor-crear-negocio {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Tarjeta contenedora blanca traslúcida */
+.tarjeta-formulario-glass {
+    background-color: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.columnas-formulario {
+    display: flex;
+    gap: 40px;
+}
+
+.columna-campos {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Envoltura personalizada para meter los inputs con los iconos grises */
+.wrapper-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.wrapper-input i:not(.icono-dropdown) {
+    position: absolute;
+    left: 12px;
+    color: #888888;
+    font-size: 14px;
+    width: 16px;
+    text-align: center;
+    pointer-events: none;
+}
+
+.wrapper-input input,
+.wrapper-input select {
+    width: 100%;
+    background-color: #EAEAEA;
+    border: 1px solid #D1D1D1;
+    border-radius: 6px;
+    padding: 10px 12px 10px 38px; /* Espacio para el icono izquierdo */
+    font-size: 14px;
+    color: #333333;
+    outline: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    min-height: 40px;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.wrapper-input input:focus,
+.wrapper-input select:focus {
+    border-color: #7C3AED;
+    background-color: #F3F2FF;
+}
+
+/* Flecha personalizada para el Select */
+.icono-dropdown {
+    position: absolute;
+    right: 12px;
+    color: #666666;
+    font-size: 12px;
+    pointer-events: none;
+}
+
+/* Segmento de Radio Buttons para la Región */
+.selector-region-interactivo {
+    display: flex;
+    border: 1px solid #C8C8C8;
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: #EAEAEA;
+    min-height: 40px;
+}
+
+.opcion-reg {
+    flex: 1;
+    text-align: center;
+    line-height: 38px;
+    font-size: 13.5px;
+    color: #555555;
+    font-weight: 500;
+    cursor: pointer;
+    border-right: 1px solid #C8C8C8;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    user-select: none;
+}
+
+.opcion-reg:last-of-type {
+    border-right: none;
+}
+
+input[type="radio"]:checked + .opcion-reg {
+    background-color: #B4C6FF; /* Tono azul de tu captura */
+    color: #111133;
+    font-weight: 700;
+}
+
+/* Control del slider de riesgo */
+.grupo-campo-completo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.grupo-campo-completo label {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #111111;
+}
+
+.contenedor-slider {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 5px 0 5px;
+}
+
+.contenedor-slider input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #B4C6FF;
+    outline: none;
+    cursor: pointer; /* Mano indicadora de arrastre */
+}
+
+/* Círculo selector del slider */
+.contenedor-slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #A9A8F5; /* Tono morado claro de tu imagen */
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    transition: transform 0.1s ease;
+}
+
+.contenedor-slider input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+}
+
+.etiquetas-slider {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    padding: 0 2px;
+}
+
+.etiqueta-riesgo {
+    transition: all 0.2s ease;
+    color: #666666;
+    font-weight: 500;
+}
+
+/* Resaltado interactivo de la palabra del nivel de riesgo activo */
+.etiqueta-riesgo.activa {
+    color: #7C3AED !important;
+    font-weight: 800 !important;
+    transform: scale(1.08);
+}
+
+/* Botones Inferiores */
+.fila-botones-accion {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.btn-formulario {
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-cancelar {
+    background-color: #EAEAEA;
+    border: 1px solid #D1D1D1;
+    color: #333333 !important;
+    text-decoration: none !important;
+}
+
+.btn-cancelar:hover {
+    background-color: #DBDBDB;
+}
+
+.btn-crear {
+    background-color: #1A1926; /* Fondo oscuro de la captura */
+    border: none;
+    color: #FFFFFF;
+}
+
+.btn-crear:hover {
+    background-color: #2D2B3F;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}

@@ -1,0 +1,110 @@
+/* ==========================================================================
+   CSS COMPLETO: C_ver_datos
+   ========================================================================== */
+
+/* Aseguramos que nada se desborde fuera de sus contenedores */
+* {
+    box-sizing: border-box;
+}
+
+.perfil-wrapper {
+    width: 100%;
+    max-width: 850px;
+    background-color: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-top: 5px solid #3B82F6;
+    border-radius: 16px;
+    padding: 30px; /* Reducido para mejor ajuste en pantallas */
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin: 0 auto; /* Centrado seguro */
+}
+
+/* Encabezado */
+.perfil-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    padding-bottom: 20px;
+}
+
+.avatar-grande {
+    width: 65px;
+    height: 65px;
+    background-color: #3B82F6;
+    color: #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.perfil-titulo h2 { font-size: 24px; color: #111133; margin: 0; font-weight: 800; }
+.perfil-titulo p { font-size: 14px; color: #555577; margin: 0; }
+
+/* Grids - Usamos min-width: 0 para que los elementos hijos respeten el grid */
+.grid-datos-jugador, 
+.grid-stats-jugador, 
+.grid-insignias {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    min-width: 0; 
+}
+
+/* Componentes */
+.caja-dato, .card-stat, .badge-item {
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    border-radius: 10px;
+    padding: 15px;
+    min-width: 0;
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+/* Insignias */
+.badge-item {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.badge-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+}
+
+.badge-item.obtenido {
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.badge-item.obtenido .badge-icon {
+    background-color: #10B981;
+    color: #FFFFFF;
+}
+
+.badge-item.bloqueado {
+    opacity: 0.6;
+    border: 1px dashed #ccc;
+}

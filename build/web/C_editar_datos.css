@@ -1,0 +1,159 @@
+/* ==========================================================================
+   ESTILOS EXCLUSIVOS PARA LA PANTALLA DE MODIFICAR PERFIL
+   ========================================================================== */
+
+/* Bloque contenedor auto-centrado horizontal y verticalmente */
+.edit-wrapper { 
+    width: 100%; 
+    max-width: 500px; 
+    margin: auto; 
+    box-sizing: border-box;
+    padding: 10px 0;
+}
+
+/* Encabezado */
+.edit-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.edit-header h2 {
+    font-size: 26px;
+    color: #111133;
+    margin: 0 0 6px 0;
+    font-weight: 800;
+}
+
+.edit-header p {
+    font-size: 14px;
+    color: #555577;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Alerta de éxito elegante */
+.alert-success {
+    background-color: #F0FDF4;
+    color: #166534;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 13.5px;
+    border-left: 4px solid #22C55E;
+    text-align: left;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+/* Tarjeta con línea superior morada (Consistente con el botón del menú) */
+.card-edit-form {
+    background-color: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-top: 5px solid #7C3AED; 
+    border-radius: 16px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    box-sizing: border-box;
+    text-align: left;
+}
+
+/* Controles de formulario */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+.input-group label {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #111111;
+}
+
+/* Contenedores de Inputs */
+.wrapper-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.wrapper-input i {
+    position: absolute;
+    left: 14px;
+    color: #888888;
+    font-size: 14px;
+    width: 16px;
+    text-align: center;
+    pointer-events: none;
+}
+
+.wrapper-input input {
+    width: 100%;
+    background-color: #EAEAEA;
+    border: 1px solid #D1D1D1;
+    border-radius: 6px;
+    padding: 12px 12px 12px 42px;
+    font-size: 14px;
+    color: #333333;
+    outline: none;
+    min-height: 42px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.wrapper-input input:focus {
+    border-color: #7C3AED;
+    background-color: #F3F2FF;
+}
+
+/* Estilo para el input deshabilitado (Readonly) */
+.disabled-input input {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #777777;
+    border-color: #CCCCCC;
+    cursor: not-allowed;
+}
+
+.disabled-input i {
+    color: #aaaaaa;
+}
+
+/* Leyendas de ayuda abajo del input */
+.input-help {
+    font-size: 12px;
+    color: #6B7280;
+    line-height: 1.3;
+    font-weight: 500;
+}
+
+/* Botón de envío */
+.form-actions {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.btn-submit-edit {
+    width: 100%;
+    padding: 12px;
+    font-size: 14.5px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    min-height: 44px;
+    background-color: #1A1926;
+    border: none;
+    color: #FFFFFF;
+}
+
+.btn-submit-edit:hover {
+    background-color: #312E4B;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

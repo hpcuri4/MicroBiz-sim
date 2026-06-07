@@ -1,0 +1,176 @@
+/* ==========================================================================
+   ESTILOS EXCLUSIVOS PARA LA PANTALLA DE ELIMINAR CUENTA
+   ========================================================================== */
+
+.delete-wrapper { 
+    width: 100%; 
+    max-width: 550px; 
+    margin: auto; 
+    box-sizing: border-box;
+    padding: 10px 0;
+}
+
+/* Encabezado */
+.delete-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.delete-header h2 {
+    font-size: 26px;
+    color: #111133;
+    margin: 0 0 6px 0;
+    font-weight: 800;
+}
+
+.delete-header p {
+    font-size: 14px;
+    color: #555577;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Tarjeta Principal con línea superior roja (Identidad de la opción en el Hub) */
+.card-delete-form {
+    background-color: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-top: 5px solid #EF4444; 
+    border-radius: 16px;
+    padding: 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    box-sizing: border-box;
+    text-align: left;
+}
+
+/* Caja de Alerta Roja */
+.danger-banner {
+    background-color: rgba(254, 242, 242, 0.85);
+    border: 1px solid #FCA5A5;
+    border-radius: 10px;
+    padding: 18px;
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.danger-icon-box {
+    background-color: #EF4444;
+    color: #FFFFFF;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.25);
+}
+
+.danger-text h4 {
+    margin: 0 0 4px 0;
+    color: #991B1B;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.danger-text p {
+    margin: 0;
+    color: #7F1D1D;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+/* Zona de Validación */
+.verification-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.verification-box label {
+    font-size: 13.5px;
+    color: #111111;
+    line-height: 1.4;
+}
+
+.verification-box label strong {
+    color: #EF4444;
+    background-color: rgba(239, 68, 68, 0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* Control Input */
+.wrapper-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.wrapper-input i {
+    position: absolute;
+    left: 14px;
+    color: #888888;
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.wrapper-input input {
+    width: 100%;
+    background-color: #EAEAEA;
+    border: 1px solid #D1D1D1;
+    border-radius: 6px;
+    padding: 12px 12px 12px 42px;
+    font-size: 14px;
+    color: #333333;
+    outline: none;
+    min-height: 42px;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+.wrapper-input input:focus {
+    border-color: #EF4444;
+    background-color: #FEF2F2;
+}
+
+/* Botón de Eliminación Crítica */
+.btn-submit-delete {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 6px;
+    border: none;
+    color: #FFFFFF;
+    background-color: #DC2626;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+}
+
+.btn-submit-delete:hover:not(:disabled) {
+    background-color: #B91C1C;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+}
+
+/* Estado Deshabilitado (Cuando no han escrito ELIMINAR) */
+.btn-submit-delete:disabled {
+    background-color: #CCCCCC;
+    color: #888888;
+    cursor: not-allowed;
+    box-shadow: none;
+    opacity: 0.6;
+}

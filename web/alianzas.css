@@ -1,0 +1,147 @@
+/* ==========================================================================
+   ALIANZAS COMERCIALES - ESTILO PREMIUM (GLASSMORPHISM)
+   ========================================================================== */
+
+/* 1. Reset General para Contención de Elementos */
+.perfil-wrapper, 
+.perfil-wrapper * {
+    box-sizing: border-box;
+}
+
+/* Color Verde Corporativo de MicroBiz */
+.text-verde {
+    color: #10B981 !important;
+}
+
+/* 2. Grid de Alianzas (Tarjetas en columnas automáticas) */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* 3. Tarjeta de Contrato Individual */
+.card-alianza {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    border-radius: 16px !important;
+    padding: 24px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-alianza:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* 4. Barras de Progreso Lineales */
+.progreso-container {
+    background-color: #E2E8F0 !important;
+    height: 8px !important;
+    border-radius: 10px !important;
+    width: 100%;
+    overflow: hidden;
+    margin: 8px 0 2px 0;
+}
+
+.progreso-bar {
+    height: 100% !important;
+    border-radius: 10px !important;
+    background: linear-gradient(90deg, #10B981, #34D399) !important; /* Degradado verde */
+    transition: width 0.4s ease;
+}
+
+/* 5. CAPA FLOTANTE DEL MODAL (Fondo Borroso) */
+.modal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(15, 23, 42, 0.6) !important; /* Capa oscura */
+    backdrop-filter: blur(8px) !important; /* Desenfoque de fondo */
+    display: none; /* Controlado dinámicamente por JS (flex / none) */
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 99999 !important; /* Por encima de absolutamente todo */
+}
+
+/* Bloqueo del Scroll del Body cuando el modal está activo */
+body[style*="overflow: hidden"] {
+    position: relative;
+}
+
+/* 6. CAJA BLANCA DEL MODAL (Contenedor del Formulario) */
+.modal-overlay .modal-contenido {
+    background-color: #ffffff !important; /* Fuerza la tarjeta blanca limpia */
+    padding: 35px !important;
+    border-radius: 24px !important; /* Bordes redondeados premium */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4) !important; /* Sombra profunda */
+    width: 100% !important;
+    max-width: 450px !important; /* Tamaño ideal responsivo */
+    display: flex !important;
+    flex-direction: column !important;
+    border: none !important;
+    animation: aparecerModal 0.25s ease-out;
+}
+
+/* Animación sutil de entrada para el Modal */
+@keyframes aparecerModal {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Título dentro del Modal */
+.modal-contenido h3 {
+    color: #111133 !important;
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    margin: 0 0 18px 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
+
+/* Etiquetas de Texto (Labels) */
+.modal-contenido label {
+    color: #64748b !important; /* Gris elegante de contraste */
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+    margin-bottom: 6px !important;
+    display: block !important;
+    text-align: left !important;
+}
+
+/* Inputs y Cajas de Selección */
+.modal-contenido input, 
+.modal-contenido select {
+    background-color: #f8fafc !important; /* Fondo gris claro e-commerce style */
+    color: #1e293b !important; /* Texto oscuro legible al escribir */
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    padding: 12px !important;
+    font-size: 14px !important;
+    width: 100% !important;
+    outline: none !important;
+    margin-bottom: 16px !important;
+    box-sizing: border-box !important;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+/* Efecto Focus al seleccionar cajas de texto */
+.modal-contenido input:focus, 
+.modal-contenido select:focus {
+    border-color: #10B981 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}

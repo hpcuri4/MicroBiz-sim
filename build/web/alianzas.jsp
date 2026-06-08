@@ -1,4 +1,43 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.List"%>
+<%@page import="model.Alianza"%>
+<%@page import="dao.AlianzaDao"%>
+<%@page import="model.negocio"%> 
+<%@page import="dao.NegocioDao"%>
+<%@page import="model.usuario"%>
+
+<%
+    // 1. Obtenemos el objeto de usuario desde la sesión
+    model.usuario u = (model.usuario) session.getAttribute("usuarioLogueado");
+    
+    // 2. Validación de seguridad
+    if (u == null) {
+        response.sendRedirect("login.jsp?error=sesion_expirada");
+        return; 
+    }
+    
+    // 3. Extraer el ID del objeto usuario
+    int idUsuario = u.getIdUsuario();
+    
+    // 4. Instanciar DAOs primero para validar flujos
+    AlianzaDao aDao = new AlianzaDao();
+    NegocioDao nDao = new NegocioDao();
+    
+    // 5. Obtener los negocios que pertenecen al usuario activo
+    List<negocio> listaNegocios = nDao.listarPorUsuario(idUsuario);
+
+    // 6. Obtener el idNegocio de la URL (si existe)
+    String idNegocioParam = request.getParameter("idNegocio");
+    int idNegocioActivo = (idNegocioParam != null) ? Integer.parseInt(idNegocioParam) : 0;
+
+    // Lógica auto-select: Si no viene un idNegocio en la URL, toma el primero de la lista
+    if (idNegocioActivo == 0 && listaNegocios != null && !listaNegocios.isEmpty()) {
+        idNegocioActivo = listaNegocios.get(0).getIdNegocio();
+    }
+    
+    // 7. Obtener las alianzas del negocio que quedó seleccionado y activo
+    List<Alianza> listaAlianzas = aDao.listarPorNegocio(idNegocioActivo);
+%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -64,62 +103,78 @@
                 </button>
             </div>
 
+            <div style="margin-bottom: 25px; background: rgba(255,255,255,0.6); padding: 15px; border-radius: 12px; display: flex; align-items: center; gap: 15px;">
+                <label style="font-weight: 700; color: #111133;"><i class="fa-solid fa-filter"></i> Ver Alianzas del Negocio:</label>
+                <select style="padding: 8px 15px; border-radius: 8px; border: 1px solid #cbd5e1; outline: none; background: white; min-width: 250px;" onchange="window.location.href='alianzas.jsp?idNegocio=' + this.value;">
+                    <% 
+                        if (listaNegocios != null && !listaNegocios.isEmpty()) {
+                            for(negocio n : listaNegocios) { 
+                    %>
+                        <option value="<%= n.getIdNegocio() %>" <%= (n.getIdNegocio() == idNegocioActivo) ? "selected" : "" %>>
+                            <%= n.getNombreNegocio() %>
+                        </option>
+                    <% 
+                            }
+                        } else {
+                    %>
+                        <option value="0">No tienes negocios registrados</option>
+                    <% } %>
+                </select>
+            </div>
+
             <div class="grid-container" style="padding: 0;">
-                
-                <div class="glass-card card-alianza" style="position: relative;">
-                    <span style="position: absolute; top: 15px; right: 15px; background: #d1fae5; color: #065f46; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;">Activo</span>
-                    <h4 style="color: #111133; font-weight: 700; margin-bottom: 5px;"><i class="fa-solid fa-truck-fast"></i> Logística Express</h4>
-                    <p style="font-size: 13px; color: #94a3b8; margin-bottom: 15px;">Contrato de Distribución Mayorista</p>
-                    
-                    <div class="progreso-container">
-                        <div class="progreso-bar" style="width: 75%;"></div>
-                    </div>
-                    <p style="font-size: 12px; color: #64748b; font-weight: 600; text-align: right; margin: -10px 0 15px 0;">45 / 60 Clientes</p>
+                <% 
+                    if (listaAlianzas != null && !listaAlianzas.isEmpty()) {
+                        for (Alianza a : listaAlianzas) { 
+                            int meta = a.getMetaClientes();
+                            int actuales = a.getClientesActuales();
+                            int porcentaje = (meta > 0) ? (actuales * 100 / meta) : 0;
+                            if (porcentaje > 100) porcentaje = 100;
+                %>
+                            <div class="glass-card card-alianza" style="position: relative;">
+                                <span style="position: absolute; top: 15px; right: 15px; background: #d1fae5; color: #065f46; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;">
+                                    <%= a.getEstadoAlianza() %>
+                                </span>
+                                
+                                <h4 style="color: #111133; font-weight: 700; margin-bottom: 5px;">
+                                    <i class="fa-solid fa-handshake"></i> <%= a.getNombreAlianza() %>
+                                </h4>
+                                <p style="font-size: 13px; color: #94a3b8; margin-bottom: 15px;"><%= a.getTipoContrato() %></p>
+                                
+                                <div class="progreso-container">
+                                    <div class="progreso-bar" style="width: <%= porcentaje %>%;"></div>
+                                </div>
+                                <p style="font-size: 12px; color: #64748b; font-weight: 600; text-align: right; margin: -10px 0 15px 0;">
+                                    <%= a.getClientesActuales() %> / <%= a.getMetaClientes() %> Clientes
+                                </p>
 
-                    <div style="background: rgba(16, 185, 129, 0.08); border-radius: 12px; padding: 15px; border: 1px solid rgba(16, 185, 129, 0.2);">
-                        <span style="font-size: 11px; color: #065f46; font-weight: 700; text-transform: uppercase;">EFECTO ACTUAL</span>
-                        <p style="font-size: 14px; color: #065f46; margin: 5px 0 0 0; font-weight: 600;">
-                            <i class="fa-solid fa-arrow-up"></i> +15% en Margen de Ventas
-                        </p>
-                    </div>
+                                <div style="background: rgba(16, 185, 129, 0.08); border-radius: 12px; padding: 15px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                                    <span style="font-size: 11px; color: #065f46; font-weight: 700; text-transform: uppercase;">IMPACTO</span>
+                                    <p style="font-size: 14px; color: #065f46; margin: 5px 0 0 0; font-weight: 600;">
+                                        <%= a.getCondicionImpacto() %>
+                                    </p>
+                                </div>
 
-                    <div class="acciones-alianza" style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 10px;">
-                        <button type="button" class="btn-action" onclick="abrirModalEditar('1', '1', 'Logística Express', '60', 'beneficio')">
-                            <i class="fa-solid fa-pen"></i>
-                        </button>
-                        <button type="button" class="btn-action delete" onclick="abrirModalEliminar('1', 'Logística Express')">
-                           <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="glass-card card-alianza" style="position: relative;">
-                    <span style="position: absolute; top: 15px; right: 15px; background: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;">En Progreso</span>
-                    <h4 style="color: #111133; font-weight: 700; margin-bottom: 5px;"><i class="fa-solid fa-shop"></i> Alianza Retail</h4>
-                    <p style="font-size: 13px; color: #94a3b8; margin-bottom: 15px;">Socio de Punto de Venta Físico</p>
-                    
-                    <div class="progreso-container">
-                        <div class="progreso-bar" style="width: 12%; background: #f59e0b;"></div>
-                    </div>
-                    <p style="font-size: 12px; color: #64748b; font-weight: 600; text-align: right; margin: -10px 0 15px 0;">12 / 100 Clientes</p>
-
-                    <div style="background: rgba(245, 158, 11, 0.08); border-radius: 12px; padding: 15px; border: 1px solid rgba(245, 158, 11, 0.2);">
-                        <span style="font-size: 11px; color: #92400e; font-weight: 700; text-transform: uppercase;">EFECTO AL CUMPLIR</span>
-                        <p style="font-size: 14px; color: #92400e; margin: 5px 0 0 0; font-weight: 600;">
-                            <i class="fa-solid fa-users-viewfinder"></i> Acceso a Segmento Premium
-                        </p>
-                    </div>
-
-                    <div class="acciones-alianza" style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 10px;">
-                    <button type="button" class="btn-action" onclick="abrirModalEditar('2', '1', 'Alianza Retail', '100', 'reputacion')">
-                        <i class="fa-solid fa-pen"></i>
-                    </button>
-                    <button type="button" class="btn-action delete" onclick="abrirModalEliminar('2', 'Alianza Retail')">
-                          <i class="fa-solid fa-trash"></i>
-                    </button>
-                    </div>
-                </div>
-
+                                <div class="acciones-alianza" style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 10px;">
+                                    <button type="button" class="btn-action" onclick="abrirModalEditar('<%= a.getIdAlianza() %>', '<%= a.getIdNegocio() %>', '<%= a.getNombreAlianza() %>', '<%= a.getMetaClientes() %>', '<%= a.getCondicionImpacto() %>')">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                    <button type="button" class="btn-action delete" onclick="abrirModalEliminar('<%= a.getIdAlianza() %>', '<%= a.getNombreAlianza() %>')">
+                                         <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                <% 
+                        }
+                    } else {
+                %>
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 40px; background: rgba(255,255,255,0.5); border-radius: 12px; border: 1px dashed #cbd5e1;">
+                            <i class="fa-solid fa-folder-open" style="font-size: 36px; color: #94a3b8; margin-bottom: 10px;"></i>
+                            <p style="color: #64748b; font-size: 15px; font-weight: 500; margin: 0;">No hay alianzas comerciales registradas para este negocio.</p>
+                        </div>
+                <% 
+                    } 
+                %>
             </div>
         </div>
     </div>
@@ -137,65 +192,91 @@
     </div>
 
 </div>
- <!-- Modal crear contrato-->
+
 <div id="modalAlianza" class="modal-overlay" style="display: none;">
     <div class="modal-contenido">
         <h3><i class="fa-solid fa-file-signature text-verde"></i> Firmar Nuevo Contrato</h3>
         
         <form action="GuardarAlianzaServlet" method="POST">
+            <input type="hidden" name="accion" value="guardar">
+            
             <label>Seleccionar Unidad de Negocio</label>
             <select name="idNegocio" required>
-                <option value="1">Tienda Física Centro</option>
-                <option value="2">Plataforma E-commerce</option>
+                <% 
+                    if (listaNegocios != null && !listaNegocios.isEmpty()) {
+                        for(negocio n : listaNegocios) { 
+                %>
+                    <option value="<%= n.getIdNegocio() %>" <%= (n.getIdNegocio() == idNegocioActivo) ? "selected" : "" %>>
+                        <%= n.getNombreNegocio() %>
+                    </option>
+                <% 
+                        }
+                    } else {
+                %>
+                    <option value="0">No tienes negocios registrados</option>
+                <% } %>
             </select>
 
             <label>Nombre del Socio / Alianza</label>
             <input type="text" name="nombreSocio" placeholder="Ej. Distribuidora del Norte" required>
             
             <label>Meta de Clientes Requerida</label>
-            <input type="number" name="metaClientes" placeholder="Ej. 100" min="1" required>
+            <input type="number" name="metaClientes" placeholder="Ej. 100" min="100" required>
             
             <label>Condición / Tipo de Impacto</label>
             <select name="tipoImpacto">
-                <option value="beneficio">Beneficio de Ingresos (+ Ventas)</option>
-                <option value="reduccion">Reducción de Costos Operativos (- Margen)</option>
-                <option value="reputacion">Impacto Reputacional (+ Clientes)</option>
+                <option value="Beneficio de Ingresos (+ Ventas)">Beneficio de Ingresos (+ Ventas)</option>
+                <option value="Reducción de Costos Operativos (- Margen)">Reducción de Costos Operativos (- Margen)</option>
+                <option value="Impacto Reputacional (+ Clientes)">Impacto Reputacional (+ Clientes)</option>
             </select>
             
+            <input type="hidden" name="estadoAlianza" value="Activo">
+            
             <div style="display: flex; gap: 12px; margin-top: 15px;">
-                <button type="button" class="btn-action" style="flex: 1; background: #f1f5f9; color: #475569; font-weight: 600; padding: 12px; border-radius: 12px; cursor: pointer;" onclick="cerrarModal('modalAlianza')">Regresar</button>
-                <button type="submit" class="btn-guardar" style="flex: 2; padding: 12px; border-radius: 12px; margin: 0; font-weight: 600; cursor: pointer;">Firmar Contrato</button>
+                <button type="button" class="btn-action" onclick="cerrarModal('modalAlianza')">Regresar</button>
+                <button type="submit" class="btn-guardar">Firmar Contrato</button>
             </div>
         </form>
     </div>
-    
-  
 </div>
-    <!-- Modal editar contrato -->
-    <div id="modalEditarAlianza" class="modal-overlay" style="display: none;">
+
+<div id="modalEditarAlianza" class="modal-overlay" style="display: none;">
     <div class="modal-contenido">
         <h3><i class="fa-solid fa-pen-to-square text-verde"></i> Editar Contrato Estratégico</h3>
         
-        <form action="EditarAlianzaServlet" method="POST">
+        <form action="GuardarAlianzaServlet" method="POST">
+            <input type="hidden" name="accion" value="editar">
             <input type="hidden" name="idAlianza" id="editarIdAlianza" value="">
+            
+            <input type="hidden" name="idNegocio" id="editarIdNegocioHidden" value="">
+            <input type="hidden" name="metaClientes" id="editarMetaClientesHidden" value="">
 
-            <label>Seleccionar Unidad de Negocio</label>
-            <select name="idNegocio" id="editarIdNegocio" required>
-                <option value="1">Tienda Física Centro</option>
-                <option value="2">Plataforma E-commerce</option>
+            <label>Unidad de Negocio (No modificable)</label>
+            <select id="editarIdNegocio" disabled style="background: #e2e8f0; cursor: not-allowed;">
+                <% 
+                    if (listaNegocios != null && !listaNegocios.isEmpty()) {
+                        for(negocio n : listaNegocios) { 
+                %>
+                    <option value="<%= n.getIdNegocio() %>">
+                        <%= n.getNombreNegocio() %>
+                    </option>
+                <% 
+                        }
+                    } 
+                %>
             </select>
 
             <label>Nombre del Socio / Alianza</label>
-            <input type="text" name="nombreSocio" id="editarNombreSocio" placeholder="Ej. Distribuidora del Norte" required>
+            <input type="text" name="nombreSocio" id="editarNombreSocio" required>
             
-            <label>Meta de Clientes Requerida</label>
-            <input type="number" name="metaClientes" id="editarMetaClientes" placeholder="Ej. 100" min="1" required>
+            <label>Meta de Clientes Requerida (No modificable)</label>
+            <input type="number" id="editarMetaClientes" disabled style="background: #e2e8f0; cursor: not-allowed;">
             
             <label>Condición / Tipo de Impacto</label>
-            <select name="tipoImpacto" id="editarTipoImpacto">
-                <option value="beneficio">Beneficio de Ingresos (+ Ventas)</option>
-                <option value="reduccion">Reducción de Costos Operativos (- Margen)</option>
-                <option value="reputacion">Impacto Reputacional (+ Clientes)</option>
+            <select name="tipoImpacto" id="editarTipoImpacto" required>
+                <option value="Beneficio de Ingresos (+ Ventas)">Beneficio de Ingresos (+ Ventas)</option>
+                <option value="Reducción de Costos Operativos (- Margen)">Reducción de Costos Operativos (- Margen)</option>
+                <option value="Impacto Reputacional (+ Clientes)">Impacto Reputacional (+ Clientes)</option>
             </select>
             
             <div style="display: flex; gap: 12px; margin-top: 15px;">
@@ -206,9 +287,6 @@
     </div>
 </div>
     
-   
-<!-- Modal eliminar contrato -->
-
 <div id="modalEliminarAlianza" class="modal-overlay" style="display: none;">
     <div class="modal-contenido" style="max-width: 400px; text-align: center;">
         <h3 style="justify-content: center; color: #ef4444 !important;">
@@ -231,16 +309,12 @@
     </div>
 </div>
 
-
 <script>
-// ==========================================
-// GLOBALES: ABRIR Y CERRAR MODALES
-// ==========================================
 function abrirModal(id) {
     var modal = document.getElementById(id);
     if (modal) {
         modal.style.setProperty('display', 'flex', 'important');
-        document.body.style.overflow = 'hidden'; // Bloquea scroll de fondo
+        document.body.style.overflow = 'hidden';
     }
 }
 
@@ -248,45 +322,56 @@ function cerrarModal(id) {
     var modal = document.getElementById(id);
     if (modal) {
         modal.style.setProperty('display', 'none', 'important');
-        document.body.style.overflow = 'auto'; // Devuelve scroll
+        document.body.style.overflow = 'auto';
     }
 }
 
-// ==========================================
-// FUNCIÓN: PREPARAR Y ABRIR EDICIÓN
-// ==========================================
 function abrirModalEditar(idAlianza, idNegocio, nombre, meta, impacto) {
-    // Verificamos en consola que entren los datos (puedes revisarlo con F12)
-    console.log("Cargando datos para editar alianza:", idAlianza);
+    console.log("Cargando datos para editar alianza ID:", idAlianza);
     
-    // Inyectamos con cuidado los valores en los campos del formulario de edición
+    // Inyectar IDs principales
     if(document.getElementById('editarIdAlianza')) document.getElementById('editarIdAlianza').value = idAlianza;
-    if(document.getElementById('editarIdNegocio')) document.getElementById('editarIdNegocio').value = idNegocio;
-    if(document.getElementById('editarNombreSocio')) document.getElementById('editarNombreSocio').value = nombre;
-    if(document.getElementById('editarMetaClientes')) document.getElementById('editarMetaClientes').value = meta;
-    if(document.getElementById('editarTipoImpacto')) document.getElementById('editarTipoImpacto').value = impacto;
     
-    // Abrimos el modal flotante de edición
+    // Asignar al select visible (bloqueado) y al input oculto que viaja al Servlet
+    if(document.getElementById('editarIdNegocio')) document.getElementById('editarIdNegocio').value = idNegocio;
+    if(document.getElementById('editarIdNegocioHidden')) document.getElementById('editarIdNegocioHidden').value = idNegocio;
+    
+    // Asignar nombre
+    if(document.getElementById('editarNombreSocio')) document.getElementById('editarNombreSocio').value = nombre;
+    
+    // Asignar a la meta visible (bloqueada) y al input oculto
+    if(document.getElementById('editarMetaClientes')) document.getElementById('editarMetaClientes').value = meta;
+    if(document.getElementById('editarMetaClientesHidden')) document.getElementById('editarMetaClientesHidden').value = meta;
+    
+    // CORRECCIÓN CLAVE: Seleccionar la opción de impacto correcta en el dropdown
+    var selectImpacto = document.getElementById('editarTipoImpacto');
+    if(selectImpacto) {
+        selectImpacto.value = impacto;
+    }
+    
     abrirModal('modalEditarAlianza');
 }
 
-// ==========================================
-// FUNCIÓN: PREPARAR Y ABRIR ELIMINACIÓN
-// ==========================================
 function abrirModalEliminar(idAlianza, nombreSocio) {
-    // Inyectamos el nombre de la empresa en el texto de advertencia
     if(document.getElementById('eliminarNombreSocio')) {
         document.getElementById('eliminarNombreSocio').innerText = nombreSocio;
     }
-    
-    // Cambiamos dinámicamente la ruta de acción del botón "Sí, Eliminar"
+    // CORREGIDO: Ahora envía los parámetros correctos de acción y id a GuardarAlianzaServlet
     if(document.getElementById('btnConfirmarEliminarUrl')) {
-        document.getElementById('btnConfirmarEliminarUrl').href = "EliminarAlianzaServlet?id=" + idAlianza;
+        document.getElementById('btnConfirmarEliminarUrl').href = "GuardarAlianzaServlet?accion=eliminar&idAlianza=" + idAlianza;
     }
-    
-    // Abrimos el modal flotante de advertencia roja
     abrirModal('modalEliminarAlianza');
 }
+</script>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const mensaje = urlParams.get('mensaje');
+    
+    if (mensaje === 'exito') {
+        alert("¡Operación realizada exitosamente!");
+    } else if (mensaje === 'error') {
+        alert("Hubo un problema al procesar la solicitud. Intenta de nuevo.");
+    }
 </script>
 </body>
 </html>

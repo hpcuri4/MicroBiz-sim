@@ -1,110 +1,156 @@
-/* ==========================================================================
-   CSS COMPLETO: C_ver_datos
-   ========================================================================== */
-
-/* Aseguramos que nada se desborde fuera de sus contenedores */
-* {
-    box-sizing: border-box;
+/* Contenedor de la Tarjeta */
+.profile-wrapper {
+    max-width: 750px;
+    margin: 40px auto;
+    padding: 0 20px;
 }
 
-.perfil-wrapper {
-    width: 100%;
-    max-width: 850px;
-    background-color: rgba(255, 255, 255, 0.55);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-top: 5px solid #3B82F6;
-    border-radius: 16px;
-    padding: 30px; /* Reducido para mejor ajuste en pantallas */
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-    margin: 0 auto; /* Centrado seguro */
+.profile-header {
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-/* Encabezado */
-.perfil-header {
+.profile-header h2 {
+    color: #2c3e50;
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+
+.card-profile {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* Sección superior del Avatar */
+.profile-avatar-section {
     display: flex;
     align-items: center;
     gap: 20px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    padding-bottom: 20px;
+    margin-bottom: 20px;
 }
 
-.avatar-grande {
-    width: 65px;
-    height: 65px;
-    background-color: #3B82F6;
-    color: #FFFFFF;
+.avatar-icon-box {
+    width: 70px;
+    height: 70px;
+    background: #e8f4fd;
+    color: #3498db;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 30px;
+    font-size: 32px;
 }
 
-.perfil-titulo h2 { font-size: 24px; color: #111133; margin: 0; font-weight: 800; }
-.perfil-titulo p { font-size: 14px; color: #555577; margin: 0; }
+.avatar-text h3 {
+    margin: 0;
+    font-size: 22px;
+    color: #333;
+}
 
-/* Grids - Usamos min-width: 0 para que los elementos hijos respeten el grid */
-.grid-datos-jugador, 
-.grid-stats-jugador, 
-.grid-insignias {
+.badge-role {
+    display: inline-block;
+    background: #e6f4ea;
+    color: #137333;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.divider {
+    border: 0;
+    height: 1px;
+    background: #eaeded;
+    margin: 25px 0;
+}
+
+/* Grilla de Información (2 columnas) */
+.profile-details-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 600px) {
+    .profile-details-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.info-tile {
+    display: flex;
+    align-items: center;
     gap: 15px;
-    min-width: 0; 
-}
-
-/* Componentes */
-.caja-dato, .card-stat, .badge-item {
-    background-color: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(0, 0, 0, 0.04);
-    border-radius: 10px;
+    background: #f8f9fa;
     padding: 15px;
-    min-width: 0;
-}
-
-.stat-icon {
-    width: 48px;
-    height: 48px;
     border-radius: 8px;
+    border-left: 4px solid #3498db;
+}
+
+.tile-icon {
+    font-size: 22px;
+    color: #7f8c8d;
+}
+
+.tile-content label {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #7f8c8d;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.tile-content p {
+    margin: 0;
+    font-size: 15px;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.status-active {
+    color: #27ae60 !important;
+    font-weight: bold !important;
+}
+
+/* Botones de acción inferiores */
+.profile-actions-nav {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    font-size: 24px;
+    margin-top: 20px;
 }
 
-/* Insignias */
-.badge-item {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
+.btn-nav-edit {
+    background: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s;
 }
 
-.badge-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 4px;
+.btn-nav-edit:hover {
+    background: #2980b9;
 }
 
-.badge-item.obtenido {
-    border: 1px solid rgba(16, 185, 129, 0.3);
-    background-color: rgba(255, 255, 255, 0.9);
+.btn-nav-back {
+    color: #7f8c8d;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
 }
 
-.badge-item.obtenido .badge-icon {
-    background-color: #10B981;
-    color: #FFFFFF;
+.btn-nav-back:hover {
+    color: #333;
 }
 
-.badge-item.bloqueado {
-    opacity: 0.6;
-    border: 1px dashed #ccc;
+#btnTogglePass:hover {
+    color: #3498db !important; /* Cambia al azul de MicroBiz al pasar el cursor */
+    transition: color 0.2s ease;
 }

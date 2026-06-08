@@ -24,7 +24,11 @@
                         <p>Ingresa a tu cuenta para gestionar tus simulaciones.</p>
                     </div>
                     
-                    
+                    <% if("accountDeleted".equals(request.getParameter("success"))) { %>
+                        <div class="alert-info" style="color: #004085; background-color: #cce5ff; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+                            Tu cuenta y datos asociados han sido eliminados de MicroBiz exitosamente.
+                        </div>
+                    <% } %>
                     <%
                     // Detectar si venimos de un registro exitoso
                     if(request.getParameter("registro") != null) {

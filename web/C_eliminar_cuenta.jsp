@@ -1,4 +1,19 @@
+<%@page import="model.usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    // 🛡️ CONTROL DE SESIÓN: Evita accesos anónimos directos a la pantalla de eliminación
+    HttpSession sesionOk = request.getSession(false);
+    usuario usuarioLogueado = null;
+    
+    if (sesionOk != null) {
+        usuarioLogueado = (usuario) sesionOk.getAttribute("usuarioLogueado");
+    }
+    
+    if (usuarioLogueado == null) {
+        response.sendRedirect("login.jsp?error=sessionExpired");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,43 +34,33 @@
                     <div class="opcion">
                         <a href="index.html"><i class="fa-solid fa-house"></i><span>Principal</span></a>
                     </div>
-
                     <div class="opcion">
                         <a href="negocio.jsp"><i class="fa-solid fa-briefcase"></i><span>Negocio</span></a>
                     </div>
-                    
                     <div class="opcion">
                         <a href="negocios_favoritos.jsp"><i class="fa-solid fa-heart"></i><span>Negocios Favoritos</span></a>
                     </div>
-                    
                     <div class="opcion">
                         <a href="credito.jsp"><i class="fa-solid fa-credit-card"></i><span>Crédito</span></a>
                     </div>
-                    
                     <div class="opcion">
                         <a href="simulacion.jsp"><i class="fa-solid fa-chart-line"></i><span>Simulación</span></a>
                     </div>
-                    
                     <div class="opcion">
                         <a href="MejorayTecnologia.jsp"><i class="fa-solid fa-computer"></i><span>Mejoras y tecnologia</span></a>
                     </div>
-                    
                     <div class="opcion">
                         <a href="Cliente.jsp"><i class="fa-solid fa-users"></i><span>Clientes</span></a>
                     </div>
-                    
                     <div class="opcion">
                         <a href="alianzas.jsp"><i class="fa-solid fa-handshake"></i><span>Alianzas Comerciales</span></a>
                     </div>
-                    
                     <div class="opcion activa">
                         <a href="configuracion.jsp"><i class="fa-solid fa-gear"></i><span>Configuración</span></a>
                     </div>
-                    
                     <div class="opcion">
                         <a href="PAyuda.jsp"><i class="fa-solid fa-circle-question"></i><span>Ayuda y Guía</span></a>
                     </div>
-                    
                     <div class="opcion">
                         <a href="Feedback.jsp"><i class="fa-solid fa-comments"></i><span>Feedback</span></a>
                     </div>
@@ -70,6 +75,12 @@
                         <p>Por favor lee con atención las consecuencias de esta acción antes de continuar.</p>
                     </div>
 
+                    <% if(request.getParameter("error") != null) { %>
+                        <div class="alert-error" style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; text-align: center;">
+                            <i class="fa-solid fa-circle-xmark"></i> No se pudo eliminar la cuenta. Verifica que no existan dependencias activas en el simulador.
+                        </div>
+                    <% } %>
+
                     <div class="card-delete-form">
                         
                         <div class="danger-banner">
@@ -83,7 +94,8 @@
                         </div>
 
                         <form action="ConfiguracionServlet" method="POST" id="formEliminar" onsubmit="return confirmarEliminacion();">
-                            <input type="hidden" name="accion" value="eliminar">
+                            
+                            <input type="hidden" name="accion" value="eliminarPerfil">
 
                             <div class="verification-box">
                                 <label for="confirmacionInput">Para confirmar la acción, escribe la palabra <strong>ELIMINAR</strong> a continuación:</label>

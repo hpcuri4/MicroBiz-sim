@@ -103,6 +103,123 @@ public usuario validarUsuario(String correo, String contrasena) {
     return usr; 
 }
 
+// ==========================================================================
+// NUEVOS MÉTODOS PARA EL CRUD DE CONFIGURACIÓN DE LA CUENTA
+// ==========================================================================
+
+// 🔵 READ: Obtener los datos más frescos del usuario activo por su ID
+public usuario obtenerPorId(int idUsuario) {
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    usuario usr = null;
+    String sql = "SELECT id_usuario, nombre_completo, correo_electronico, contrasena FROM Usuario WHERE id_usuario = ?";
+    
+    try {
+        conn = ConexionBD.getConexion();
+        if (conn != null) {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, idUsuario);
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                usr = new usuario();
+                usr.setIdUsuario(rs.getInt("id_usuario"));
+                usr.setNombreCompleto(rs.getString("nombre_completo"));
+                usr.setCorreoElectronico(rs.getString("correo_electronico"));
+                usr.setContrasena(rs.getString("contrasena"));
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("Error en UsuarioDao al obtenerPorId: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            if (conn != null) conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    return usr;
+}
+
+// 🟡 UPDATE: Modificar Perfil (Nombre Completo y Correo Electrónico)
+// 🟡 UPDATE: Modificar Perfil manejando cambio de contraseña opcional
+public boolean actualizarPerfil(usuario usr, boolean actualizarPassword) {
+    Connection conn = null;
+    PreparedStatement ps = null;
+    String sql;
+    
+    if (actualizarPassword) {
+        sql = "UPDATE Usuario SET nombre_completo = ?, contrasena = ? WHERE id_usuario = ?";
+    } else {
+        sql = "UPDATE Usuario SET nombre_completo = ? WHERE id_usuario = ?";
+    }
+    
+    try {
+        conn = ConexionBD.getConexion();
+        if (conn == null) return false;
+        
+        ps = conn.prepareStatement(sql);
+        
+        if (actualizarPassword) {
+            ps.setString(1, usr.getNombreCompleto());
+            ps.setString(2, usr.getContrasena());
+            ps.setInt(3, usr.getIdUsuario());
+        } else {
+            ps.setString(1, usr.getNombreCompleto());
+            ps.setInt(2, usr.getIdUsuario());
+        }
+        
+        int filasAfectadas = ps.executeUpdate();
+        return filasAfectadas > 0;
+        
+    } catch (SQLException e) {
+        System.out.println("Error en UsuarioDao al actualizarPerfil: " + e.getMessage());
+        e.printStackTrace();
+        return false;
+    } finally {
+        try {
+            if (ps != null) ps.close();
+            if (conn != null) conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+}
+
+// 🔴 DELETE: Eliminar la cuenta del jugador por completo
+public boolean eliminarUsuario(int idUsuario) {
+    Connection conn = null;
+    PreparedStatement ps = null;
+    String sql = "DELETE FROM Usuario WHERE id_usuario = ?";
+    
+    try {
+        conn = ConexionBD.getConexion();
+        if (conn == null) return false;
+        
+        ps = conn.prepareStatement(sql);
+        ps.setInt(1, idUsuario);
+        
+        int filasAfectadas = ps.executeUpdate();
+        return filasAfectadas > 0;
+        
+    } catch (SQLException e) {
+        System.out.println("Error en UsuarioDao al eliminarUsuario: " + e.getMessage());
+        e.printStackTrace();
+        return false;
+    } finally {
+        try {
+            if (ps != null) ps.close();
+            if (conn != null) conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+}
+
 
 
 }

@@ -1,0 +1,234 @@
+
+/* ÁREA CENTRAL RESPONSABLE: 
+   Evita que los bloques invisibles o etiquetas <br> rompan la pantalla.
+   Si algo no cabe, genera un scroll interno perfecto.
+*/
+.contenido-pagina {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 30px 10px 30px; /* Reducido el padding inferior para subir componentes */
+    box-sizing: border-box;
+}
+
+/* Contenedor interno del tablero */
+.contenedor-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espaciado compacto e idéntico entre bloques */
+}
+
+/* Neutralización de los saltos de línea repetidos del HTML */
+.contenedor-dashboard br,
+.contenido-pagina br {
+    display: none; 
+}
+
+/* El pie de página se clava rígidamente abajo con un margen superior controlado */
+.pie-pagina {
+    flex-shrink: 0;
+    width: 100%;
+    background-color: #111827; /* Gris muy oscuro */
+    padding: 15px 30px;
+    margin-top: 15px; /* Controla qué tan arriba se posiciona respecto al contenido */
+    box-sizing: border-box;
+    border-top: 1px solid #1f2937;
+}
+
+.contenido-pie {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #9ca3af;
+    font-size: 0.85rem;
+}
+
+.pie-izquierdo strong {
+    color: #ffffff;
+}
+
+.correo-pie {
+    color: #38bdf8;
+    text-decoration: none;
+}
+
+/* ==========================================================================
+   2. TEXTOS Y ENCABEZADOS DEL DASHBOARD
+   ========================================================================== */
+
+.encabezado-seccion {
+    margin-bottom: 5px;
+}
+
+.titulo-seccion {
+    font-size: 1.8rem;
+    color: #ffffff; /* Blanco para resaltar sobre el fondo morado */
+    margin: 0;
+    font-weight: 700;
+}
+
+.subtitulo-dashboard {
+    font-size: 1.25rem;
+    color: #ffffff; /* Blanco para mantener legibilidad */
+    margin: 10px 0 0 0;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   3. BLOQUE DE BIENVENIDA (TARJETA GLASSMORPHISM)
+   ========================================================================== */
+
+.tarjeta-bienvenida-glass {
+    background: rgba(255, 255, 255, 0.9); /* Más opaco para contrastar con el morado */
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 12px;
+    padding: 15px 25px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+.info-jugador h2 {
+    font-size: 1.4rem;
+    color: #4f46e5; /* Índigo */
+    margin: 0 0 5px 0;
+    font-weight: 600;
+}
+
+.info-jugador p {
+    color: #4b5563;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* ==========================================================================
+   4. GRID INTERACTIVO DE BOTONES KPI
+   ========================================================================== */
+
+.grid-resumen-kpi {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px;
+}
+
+.tarjeta-kpi-boton {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    text-decoration: none; 
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.tarjeta-kpi-boton:hover {
+    transform: translateY(-2px);
+    background-color: #f9fafb;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+
+.kpi-icono {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+/* Categorías cromáticas */
+.color-azul { background-color: #e0f2fe; color: #0369a1; }
+.color-rojo { background-color: #fee2e2; color: #b91c1c; }
+.color-oro  { background-color: #fef3c7; color: #b45309; }
+
+.kpi-info h3 {
+    font-size: 1.1rem;
+    color: #1f2937;
+    margin: 0;
+    font-weight: 600;
+}
+
+.kpi-info p {
+    color: #6b7280;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+/* ==========================================================================
+   5. ACCIONES RECOMENDADAS (COMPACTACIÓN DE BOTONES)
+   ========================================================================== */
+
+.grid-acciones-rapidas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 15px;
+}
+
+.bloque-accion-acceso {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 12px 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-decoration: none;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bloque-accion-acceso:hover {
+    background-color: #f9fafb;
+    border-color: #d1d5db;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
+}
+
+.bloque-accion-acceso i {
+    font-size: 1.25rem;
+    margin-top: 2px;
+}
+
+.accion-texto h4 {
+    font-size: 0.95rem;
+    color: #1f2937;
+    margin: 0 0 2px 0;
+    font-weight: 600;
+}
+
+.accion-texto p {
+    color: #6b7280;
+    font-size: 0.82rem;
+    line-height: 1.3;
+    margin: 0;
+}
+
+/* ==========================================================================
+   6. ADAPTACIÓN RESPONSIVA (MÓVILES)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .contenedor-principal {
+        height: auto;
+    }
+    
+    .contenido-pagina {
+        overflow-y: visible;
+        padding: 15px;
+    }
+
+    .grid-resumen-kpi,
+    .grid-acciones-rapidas {
+        grid-template-columns: 1fr;
+    }
+
+    .contenido-pie {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+}

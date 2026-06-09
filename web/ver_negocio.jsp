@@ -67,12 +67,10 @@
             <div class="contenido-pagina">
                 <div class="contenedor-ver-negocios">
     <%
-    // 1. 🛡️ FILTRO DE SEGURIDAD (Validar sesión)
     HttpSession sess = request.getSession(false);
     usuario usr = (sess != null) ? (usuario) sess.getAttribute("usuarioLogueado") : null;
     if (usr == null) { response.sendRedirect("login.jsp?error=sessionExpired"); return; }
 
-    // 2. Lógica de búsqueda
     String nombreBuscar = request.getParameter("nombreBusqueda");
     negocio nEncontrado = null;
     boolean busquedaRealizada = (nombreBuscar != null && !nombreBuscar.trim().isEmpty());

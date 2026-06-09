@@ -1,22 +1,55 @@
+<%@page import="model.Simulacion"%>
+<%@page import="model.negocio"%>
+<%@page import="model.usuario"%> <%-- Importamos tu clase usuario --%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    // 🛡️ CONTROL DINÁMICO ESTRICTO DE SESIÓN
+    HttpSession sesionOk = request.getSession(false);
+    usuario usuarioLogueado = null;
+    
+    if (sesionOk != null) {
+        usuarioLogueado = (usuario) sesionOk.getAttribute("usuarioLogueado");
+    }
+    
+    if (usuarioLogueado == null) {
+        response.sendRedirect("login.jsp?error=sessionExpired");
+        return; // Detiene por completo la carga si no hay sesión
+    }
+
+    // =====================================================================
+    // CARGA DE DATOS BASADA EN EL USUARIO LOGUEADO
+    // =====================================================================
+    
+    // 1. Instancia y carga de simulaciones generales
+    dao.SimulacionDao simDao = new dao.SimulacionDao();
+    List<Simulacion> listaSimulaciones = simDao.listarTodasLasSimulaciones();
+    
+    // 2. Extraemos el ID del objeto que recuperamos de tu sesión
+    int idUsuarioActivo = usuarioLogueado.getIdUsuario(); 
+    
+    // 3. Instancia del DAO de negocios y filtrado real por el ID del usuario
+    dao.NegocioDao negDao = new dao.NegocioDao(); 
+    List<negocio> listaNegocios = negDao.listarNegociosPorUsuario(idUsuarioActivo);
+%>
 <!DOCTYPE html>
 <html>
     <head>
-        <title>MicroBiz - Simulación</title>
+        <title>MicroBiz - Principal</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
         <link rel="stylesheet" href="newcss.css">
-        <link rel="stylesheet" href="CreditoySimulacion.css">
+        <link rel="stylesheet" href="principal.css">
     </head>
     <body>
         <div class="contenedor-principal">
-
+            
             <div class="barra-superior">
                 <div class="logo">
                     <i class="fa-solid fa-cubes-stacked"></i> MicroBiz
                 </div>
-
+                
                 <div class="menu-navegacion">
                     <div class="opcion">
                         <a href="index.html"><i class="fa-solid fa-house"></i><span>Principal</span></a>
@@ -54,112 +87,91 @@
                 </div>
             </div>
 
-            <div class="contenido-pagina" style="overflow: hidden !important;">
+            <div class="seccion-simulador">
+                <h1>🎮 Panel Principal de Simulaciones</h1>
+                <%-- 🟢 CORREGIDO: Usamos getNombreCompleto() mapeado a tu columna de la BD --%>
+                <p>Bienvenido, <strong><%= usuarioLogueado.getNombreCompleto() %></strong>. Gestiona tus partidas guardadas o inicia nuevos retos.</p>
                 
-                <div class="simulacion-wrapper-interno" style="display: flex; flex-direction: column; height: 100%; justify-content: flex-start; gap: 10px;">
+                <br>
 
-                    <section class="simulacion-encabezado" style="margin: 0; flex-shrink: 0;">
-                        <div>
-                            <span class="etiqueta-seccion">Panel de simulación</span>
-                            <h1 style="font-size: 30px; margin: 0;">Simulación</h1>
-                        </div>
-                    </section>
-
-                    <section class="alerta-evento" style="margin-bottom: 5px; flex-shrink: 0; padding: 10px 15px;">
-                        <div class="icono-alerta">
-                            <i class="fa-solid fa-triangle-exclamation" style="font-size: 30px;"></i>
-                        </div>
-                        <div class="texto-alerta">
-                            <h2>Aumento de costos del proveedor</h2>
-                            <p style="margin: 2px 0;">
-                                Tu proveedor principal subió precios un 15% por escasez de componentes. Debes decidir cómo responde tu negocio este turno.
-                            </p>
-                            <span>Este evento afecta tu turno actual</span>
-                        </div>
-                    </section>
-
-                    <section class="metricas-simulacion" style="margin-bottom: 8px; flex-shrink: 0; padding: 8px;">
-                        <div class="metrica">
-                            <i class="fa-solid fa-sack-dollar"></i>
-                            <strong>40k</strong>
-                            <span>Ingresos</span>
-                        </div>
-                        <div class="metrica">
-                            <i class="fa-solid fa-dollar-sign"></i>
-                            <strong>10k</strong>
-                            <span>Ganancias</span>
-                        </div>
-                        <div class="metrica">
-                            <i class="fa-solid fa-user-group"></i>
-                            <strong>126</strong>
-                            <span>Clientes</span>
-                        </div>
-                        <div class="metrica">
-                            <i class="fa-solid fa-star"></i>
-                            <strong>84%</strong>
-                            <span>Reputación</span>
-                        </div>
-                    </section>
-
-                    <section class="simulacion-grid" style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 15px; flex: 1; min-height: 0; overflow: hidden; margin-bottom: 5px;">
-
-                        <div class="panel-simulacion" style="display: flex; flex-direction: column; height: 100%; min-height: 0; box-sizing: border-box;">
-                            <h2>Eventos del turno</h2>
+                <div class="tarjeta-simulacion">
+                    <h2>✨ Iniciar Nueva Partida</h2>
+                    <form action="SimulacionServlet" method="POST" style="display: flex; flex-direction: column; gap: 5px;">
+                        <input type="hidden" name="accion" value="crear">
+                        
+                        <label for="idNegocio">Selecciona el Negocio para la Simulación:</label>
+                        <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
                             
-                            <div class="panel-scroll-interno" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px;">
-                                <article class="evento-card">
-                                    <div>
-                                        <h3>Aumento de costos de proveedor</h3>
-                                        <p>Tu proveedor principal sube precios un 15% por escasez de chips. Afecta tu margen directamente.</p>
-                                    </div>
-                                    <strong>Impacto: -$1,800 en ganancias</strong>
-                                </article>
-
-                                <article class="evento-card">
-                                    <div>
-                                        <h3>Feria tecnológica regional</h3>
-                                        <p>Hay una expo este fin de semana. Puedes participar para ganar visibilidad y nuevos clientes.</p>
-                                    </div>
-                                    <strong>Oportunidad: +30 a +50 clientes potenciales</strong>
-                                </article>
-                            </div>
-
-                            <a href="detalles_evento.jsp" class="btn-secundario" style="flex-shrink: 0; margin-top: 8px;">
-                                <i class="fa-solid fa-circle-info"></i> Ver detalles eventos
-                            </a>
-                        </div>
-
-                        <div class="panel-simulacion panel-decision" style="display: flex; flex-direction: column; height: 100%; min-height: 0; box-sizing: border-box;">
-                            <h2>Toma de decisión</h2>
-
-                            <div class="panel-scroll-interno" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px;">
-                                <div class="decision-item">
-                                    <article class="decision-card">
-                                        <h3>Participar en la feria</h3>
-                                        <p>Renta un stand y promociona tu tienda. Alto potencial de nuevos clientes, pero requiere inversión.</p>
-                                    </article>
-                                    <button class="btn-decision">Tomar decisión 1</button>
-                                </div>
-
-                                <div class="decision-item">
-                                    <article class="decision-card">
-                                        <h3>Buscar nuevo proveedor</h3>
-                                        <p>Investiga alternativas para reducir el impacto del alza. Toma tiempo, pero puede mejorar márgenes a futuro.</p>
-                                    </article>
-                                    <button class="btn-decision">Tomar decisión 2</button>
-                                </div>
-                            </div>
-
-                            <button class="btn-secundario btn-saltar" style="flex-shrink: 0; margin-top: 8px;">
-                                <i class="fa-solid fa-forward"></i> Saltar turno
+                            <select name="idNegocio" id="idNegocio" required style="margin-bottom: 0;">
+                                <% if (listaNegocios != null && !listaNegocios.isEmpty()) { %>
+                                    <option value="">-- Selecciona uno de tus negocios --</option>
+                                    <% for (negocio neg : listaNegocios) { %>
+                                        <option value="<%= neg.getIdNegocio() %>">
+                                            <%= neg.getNombreNegocio() %> (ID: <%= neg.getIdNegocio() %>)
+                                        </option>
+                                    <% } %>
+                                <% } else { %>
+                                    <option value="">⚠️ No tienes negocios registrados todavía</option>
+                                <% } %>
+                            </select>
+                            
+                            <button type="submit" class="btn-sim-crear" <%=(listaNegocios == null || listaNegocios.isEmpty()) ? "disabled" : ""%>>
+                                + Crear Nueva Simulación
                             </button>
                         </div>
-
-                    </section>
+                    </form>
                 </div>
-                
-            </div>
+                                
+                <h2>💾 Partidas Guardadas (Simulaciones Activas)</h2>
+                <div class="tabla-simulacion-wrapper">
+                    <table class="tabla-simulacion">
+                        <thead>
+                            <tr>
+                                <th>ID Sim</th>
+                                <th>ID Negocio</th>
+                                <th>Turno</th>
+                                <th>Ingresos</th>
+                                <th>Costos Operativos</th>
+                                <th>Ganancias Netas</th>
+                                <th>Reputación</th>
+                                <th>Acciones del Jugador</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (listaSimulaciones != null && !listaSimulaciones.isEmpty()) { 
+                                for (Simulacion sim : listaSimulaciones) { %>
+                                <tr>
+                                    <td><%= sim.getIdSimulacion() %></td>
+                                    <td><%= sim.getIdNegocio() %></td>
+                                    <td><strong style="color: #7a40f2;"><%= sim.getTurnoActual() %></strong></td>
+                                    <td>$<%= sim.getIngresos() %></td>
+                                    <td>$<%= sim.getCostosOperativos() %></td>
+                                    <td>$<%= sim.getGananciasNetas() %></td>
+                                    <td><%= sim.getReputacion() %>%</td>
+                                    <td>
+                                        <button class="btn-tabla-jugar" onclick="jugarPartida(<%= sim.getIdSimulacion() %>, <%= sim.getIdNegocio() %>)">
+                                            ▶️ Jugar
+                                        </button>
 
+                                        <button class="btn-tabla-alterar" onclick="modificarMetricas(<%= sim.getIdSimulacion() %>, <%= sim.getReputacion() %>, <%= sim.getTurnoActual() %>)">
+                                            🛠️ Alterar
+                                        </button>
+
+                                        <button class="btn-tabla-borrar" onclick="eliminarSimulacion(<%= sim.getIdSimulacion() %>)">
+                                            ❌ Borrar
+                                        </button>
+                                    </td>
+                                </tr>
+                            <% } } else { %>
+                                <tr>
+                                    <td colspan="8" style="text-align: center; color: #5c5e75;">No tienes simulaciones creadas. ¡Inicia una arriba!</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
             <div class="pie-pagina">
                 <div class="contenido-pie">
                     <div class="pie-izquierdo">
@@ -172,6 +184,28 @@
                 </div>
             </div>
 
-        </div>
+        </div> 
+        
+        <script>
+            function jugarPartida(idSimulacion, idNegocio) {
+                window.location.href = "SimulacionServlet?accion=cargarTablero&idSimulacion=" + idSimulacion + "&idNegocio=" + idNegocio;
+            }
+
+            function eliminarSimulacion(idSimulacion) {
+                if (confirm("¿Estás completamente seguro de borrar esta partida? Perderás todo el historial de turnos.")) {
+                    window.location.href = "SimulacionServlet?accion=eliminar&idSimulacion=" + idSimulacion;
+                }
+            }
+
+            function modificarMetricas(idSimulacion, repActual, turnoActual) {
+                const nuevaRep = prompt("Modificar reputación (0 - 100):", repActual);
+                const nuevoTurno = prompt("Modificar turno actual:", turnoActual);
+                
+                if (nuevaRep !== null && nuevoTurno !== null) {
+                    window.location.href = "SimulacionServlet?accion=actualizarMetricas&idSimulacion=" + idSimulacion + 
+                                           "&nuevaReputacion=" + nuevaRep + "&nuevoTurno=" + nuevoTurno;
+                }
+            }
+        </script>
     </body>
 </html>

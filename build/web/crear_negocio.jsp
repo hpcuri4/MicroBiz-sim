@@ -2,7 +2,6 @@
 <%@page import="model.usuario"%>
 
 <%
-    // 🛡️ CONTROL DINÁMICO ESTRICTO DE SESIÓN
     HttpSession sesionOk = request.getSession(false);
     usuario usuarioLogueado = null;
     

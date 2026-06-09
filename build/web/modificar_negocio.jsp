@@ -4,7 +4,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    // 🛡️ CONTROL DINÁMICO ESTRICTO DE SESIÓN
     HttpSession sesionOk = request.getSession(false);
     usuario usuarioLogueado = null;
     
@@ -92,7 +91,6 @@
         </div>
         
         <%
-    // Lógica para recuperar el negocio a editar usando tu DAO actual
     int idEditar = Integer.parseInt(request.getParameter("id"));
     NegocioDao dao = new NegocioDao();
     usuario user = (usuario) session.getAttribute("usuarioLogueado");

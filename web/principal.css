@@ -1,327 +1,384 @@
-
 /* ==========================================================================
-   4. CONTROL DE ENLACES (ELIMINA EL SUBRAYADO AZUL / MORADO)
+   1. CONTROL DE DISEÑO GLOBAL Y STICKY FOOTER (APLICACIÓN ESCRITORIO)
    ========================================================================== */
-.opcion {
-    position: relative;
+
+/* Bloquea el desborde completo de la ventana para evitar doble barra de scroll */
+html, body {
+    margin: 0;
+    padding: 0;
     height: 100%;
+    overflow: hidden; 
+}
+
+/* Contenedor maestro en modo Flexbox vertical que ocupa exactamente el viewport */
+.contenedor-principal {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    height: 100vh; 
+    box-sizing: border-box;
 }
 
-/* Limpieza absoluta de estados de enlaces */
-.opcion a, 
-.opcion a:visited, 
-.opcion a:active, 
-.opcion a:focus {
-    display: flex;
-    align-items: center;
-    padding: 8px 10px;               /* Compacto para que quepan las 9 opciones limpiamente */
-    color: #222244 !important;        /* Forzar color gris oscuro */
-    text-decoration: none; /* Quita el subrayado morado/azul por completo */
-    font-size: 13px;                  /* Ajustado para balance de pantalla */
-    font-weight: 600;
-    border-radius: 8px;
-    transition: all 0.25s ease;
-    outline: none;
+/* Barra superior fija (Hereda estilos base de newcss, aseguramos comportamiento) */
+.barra-superior {
+    flex-shrink: 0;
 }
 
-/* Iconos de las pestañas */
-.opcion a i {
-    margin-right: 5px;
-    font-size: 14px;
-    color: #7C3AED;
-    transition: color 0.25s ease;
-}
-
-/* Efectos Hover */
-.opcion:hover a {
-    background-color: rgba(255, 255, 255, 0.4);
-    color: #111133 !important;
-    text-decoration: none !important;
-}
-
-.opcion:hover a i {
-    color: #111133;
-}
-
-/* Línea indicadora animada inferior */
-.opcion::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 10px;
-    right: 10px;
-    height: 3px;
-    background-color: #7C3AED;
-    transform: scaleX(0);
-    transition: transform 0.25s ease;
-    border-radius: 3px 3px 0 0;
-}
-
-.opcion:hover::after {
-    transform: scaleX(1);
-}
-
-/* ==========================================================================
-   5. COMPORTAMIENTO PARA LA PESTAÑA SELECCIONADA (ACTIVA)
-   ========================================================================== */
-.opcion.activa a,
-.opcion.activa a:visited {
-    color: #111133 !important;
-    background-color: rgba(255, 255, 255, 0.6);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-    text-decoration: none !important;
-}
-
-.opcion.activa::after {
-    transform: scaleX(1); /* Deja la barra fija abajo de la pestaña activa */
-}
-
-/* ==========================================================================
-   6. ÁREA DE CONTENIDO Y PIE DE PÁGINA
-   ========================================================================== */
+/* 🛠️ SECCIÓN CENTRAL (SIMULADOR):
+   Se expande para rellenar la pantalla y maneja su propio scroll interno 
+*/
+.seccion-simulador,
 .contenido-pagina {
-    flex: 1;
-    padding: 40px;
-    position: relative;
+    flex: 1; 
+    overflow-y: auto; 
+    padding: 20px 30px !important;
+    box-sizing: border-box;
+    min-height: 0 !important; /* Rompe herencias restrictivas de la hoja externa */
 }
 
-/* Esfera central difuminada */
-.contenido-pagina::before {
-    content: '';
-    position: fixed;
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    filter: blur(80px);
-    z-index: -1;
-    opacity: 0.3;
-    background: #EC4899;
-    top: 40%;
-    left: 50%;
-    transform: translateX(-50%);
-    pointer-events: none;
+/* Contenedor estructural interno del Dashboard */
+.contenedor-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Margen compacto para ahorrar espacio vertical */
+    padding-bottom: 5px;
 }
 
-/* Pie de página */
+/* Pie de página firmemente anclado al límite inferior */
 .pie-pagina {
-    background-color: #111133;
-    color: #FFFFFF;
-    padding: 25px 40px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0; 
+    width: 100%;
+    background-color: #111827; 
+    padding: 12px 25px;
+    box-sizing: border-box;
 }
 
 .contenido-pie {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
-}
-
-.pie-izquierdo {
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-.pie-derecho {
-    color: #A2A2B5;
-    font-size: 13px;
+    color: #9ca3af;
+    font-size: 0.85rem;
 }
 
 .correo-pie {
-    color: #C4C3FF;
-    font-weight: 500;
+    color: #38bdf8;
+    text-decoration: none;
 }
 
-
-
-
-
-
-
-
-
-
-
 /* ==========================================================================
-   ESTILOS PARA LA PANTALLA PRINCIPAL / DASHBOARD (GLASSMORPHISM)
+   2. COMPONENTES DEL ENCABEZADO Y BIENVENIDA
    ========================================================================== */
-.contenedor-dashboard {
-    width: 100%;
-    max-width: 1150px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
+
+.seccion-simulador h1,
+.titulo-seccion {
+    font-size: 1.8rem;
+    color: #1e1b4b; /* Azul Índigo Oscuro */
+    margin: 0 0 5px 0;
+    font-weight: 700;
+}
+
+.seccion-simulador p {
+    color: #4b5563;
+    font-size: 0.95rem;
+    margin: 0;
 }
 
 .subtitulo-dashboard {
-    font-size: 20px;
-    font-weight: 700;
-    color: #111133;
-    margin-top: 10px;
+    font-size: 1.2rem;
+    color: #312e81;
+    margin: 5px 0 0 0;
+    font-weight: 600;
 }
 
-/* 1. Estilos de la Tarjeta de Bienvenida */
+/* Tarjeta de Bienvenida Estilo Glassmorphism */
 .tarjeta-bienvenida-glass {
-    background-color: rgba(255, 255, 255, 0.55);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 16px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 30px;
-}
-
-.info-jugador h2 {
-    font-size: 26px;
-    color: #2D2665;
-    margin-bottom: 8px;
-}
-
-.info-jugador p {
-    font-size: 14.5px;
-    color: #444466;
-    line-height: 1.5;
-    max-width: 650px;
-}
-
-.stats-principales {
-    display: flex;
-    gap: 20px;
-}
-
-.stat-principal-box {
-    background-color: rgba(255, 255, 255, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    border-radius: 12px;
-    padding: 15px 25px;
-    text-align: center;
-    min-width: 160px;
-}
-
-.stat-label {
-    display: block;
-    font-size: 12px;
-    font-weight: 600;
-    color: #666688;
-    text-transform: uppercase;
-    margin-bottom: 5px;
-}
-
-.stat-valor {
-    font-size: 22px;
-    font-weight: 800;
-    color: #111133;
-}
-
-.stat-valor.positivo {
-    color: #10B981; /* Verde de éxito para las ganancias */
-}
-
-.stat-valor small {
-    font-size: 12px;
-    font-weight: 600;
-}
-
-/* 2. Grid de KPIs Resumen */
-.grid-resumen-kpi {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-}
-
-.tarjeta-kpi {
-    background-color: rgba(255, 255, 255, 0.45);
+    background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 12px;
-    padding: 20px;
+    padding: 15px 25px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
     display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 20px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+}
+
+.info-jugador h2 {
+    font-size: 1.5rem;
+    color: #4f46e5; /* Violeta corporativo */
+    margin: 0 0 5px 0;
+}
+
+.info-jugador p {
+    color: #4b5563;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* ==========================================================================
+   3. GRID DE TARJETAS KPI (TRANSFORMADAS EN BOTONES DE NAVEGACIÓN)
+   ========================================================================== */
+
+.grid-resumen-kpi {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.tarjeta-kpi-boton {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e5e7eb;
+    text-decoration: none; 
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+}
+
+/* Efecto hover interactivo para denotar clicabilidad */
+.tarjeta-kpi-boton:hover {
+    transform: translateY(-4px); 
+    background-color: #f9fafb;
+    border-color: #cfd1d4;
+    box-shadow: 0 10px 20px -3px rgba(79, 70, 229, 0.08); 
+}
+
+.tarjeta-kpi-boton:hover .kpi-icono {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
 }
 
 .kpi-icono {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
+    font-size: 1.25rem;
+    flex-shrink: 0;
 }
 
-/* Paleta cromática para los mini iconos */
-.kpi-icono.color-azul { background-color: #E0E7FF; color: #3B82F6; }
-.kpi-icono.color-rojo { background-color: #FEE2E2; color: #EF4444; }
-.kpi-icono.color-oro { background-color: #FEF3C7; color: #F59E0B; }
+/* Paletas cromáticas de los módulos superiores */
+.color-azul { background-color: #e0f2fe; color: #0369a1; }
+.color-rojo { background-color: #fee2e2; color: #b91c1c; }
+.color-oro { background-color: #fef3c7; color: #b45309; }
 
 .kpi-info h3 {
-    font-size: 18px;
+    font-size: 1.2rem;
+    color: #1f2937;
+    margin: 0;
     font-weight: 700;
-    color: #111133;
-    margin-bottom: 2px;
 }
 
 .kpi-info p {
-    font-size: 13px;
-    color: #666666;
+    color: #6b7280;
+    font-size: 0.88rem;
+    margin: 0;
 }
 
-/* 3. Grid de Accesos Directos (Acciones Recomendadas) */
+/* ==========================================================================
+   4. GRID DE ACCIONES RÁPIDAS (RECOMENDADAS)
+   ========================================================================== */
+
 .grid-acciones-rapidas {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 20px;
 }
 
 .bloque-accion-acceso {
-    background-color: rgba(255, 255, 255, 0.55);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 12px;
-    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 12px 15px; 
     display: flex;
-    align-items: center;
-    gap: 18px;
-    text-decoration: none !important;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.02);
-    transition: transform 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease;
-    cursor: pointer;
-}
-
-.bloque-accion-acceso:hover {
-    transform: translateY(-3px);
-    background-color: rgba(255, 255, 255, 0.75);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    align-items: flex-start;
+    gap: 12px;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
 }
 
 .bloque-accion-acceso i {
-    font-size: 28px;
-    width: 35px;
-    text-align: center;
+    font-size: 1.3rem;
+    margin-top: 2px;
+    transition: transform 0.2s ease;
 }
 
 .accion-texto h4 {
-    font-size: 15px;
-    font-weight: 700;
-    color: #111133;
-    margin-bottom: 3px;
+    font-size: 1rem;
+    color: #1f2937;
+    margin: 0 0 3px 0;
+    font-weight: 600;
 }
 
 .accion-texto p {
-    font-size: 12px;
-    color: #555577;
+    color: #6b7280;
+    font-size: 0.82rem;
     line-height: 1.3;
+    margin: 0;
+}
+
+.bloque-accion-acceso:hover {
+    background-color: #f9fafb;
+    border-color: #cfd1d4;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.bloque-accion-acceso:hover i {
+    transform: scale(1.1);
+}
+
+/* ==========================================================================
+   5. FORMULARIO DE NUEVA PARTIDA Y TABLA DE SIMULACIONES
+   ========================================================================== */
+
+/* Bloque del generador de simulaciones */
+.tarjeta-simulacion {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+}
+
+.tarjeta-simulacion h2 {
+    font-size: 1.2rem;
+    color: #4f46e5;
+    margin: 0 0 10px 0;
+}
+
+.tarjeta-simulacion label {
+    font-size: 0.9rem;
+    color: #374151;
+    font-weight: 500;
+}
+
+.tarjeta-simulacion select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 0.9rem;
+    outline: none;
+    min-width: 280px;
+}
+
+.btn-sim-crear {
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-sim-crear:hover:not(:disabled) { background-color: #4338ca; }
+.btn-sim-crear:disabled { background-color: #9ca3af; cursor: not-allowed; }
+
+/* Envoltorio contenedor de la Tabla */
+.tabla-simulacion-wrapper {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    margin-top: 10px;
+}
+
+.tabla-simulacion {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.tabla-simulacion th {
+    background-color: #f9fafb;
+    color: #374151;
+    padding: 12px 16px;
+    font-weight: 600;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.tabla-simulacion td {
+    padding: 12px 16px;
+    color: #4b5563;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.tabla-simulacion tbody tr:last-child td { border-bottom: none; }
+
+/* Botones de acción incrustados en las celdas */
+.btn-tabla-jugar, .btn-tabla-alterar, .btn-tabla-borrar {
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-right: 5px;
+    transition: opacity 0.2s;
+}
+
+.btn-tabla-jugar { background-color: #dcfce7; color: #166534; }
+.btn-tabla-alterar { background-color: #fef3c7; color: #92400e; }
+.btn-tabla-borrar { background-color: #fee2e2; color: #991b1b; }
+
+.btn-tabla-jugar:hover, .btn-tabla-alterar:hover, .btn-tabla-borrar:hover {
+    opacity: 0.85;
+}
+
+/* ==========================================================================
+   6. RESPONSIVE DESIGN (ADAPTACIÓN A SMARTPHONES Y TABLETS)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    /* En dispositivos móviles sí habilitamos el scroll general por accesibilidad */
+    html, body {
+        overflow: auto;
+    }
+    
+    .contenedor-principal {
+        height: auto;
+    }
+
+    .seccion-simulador,
+    .contenido-pagina {
+        padding: 15px !important;
+        overflow-y: visible;
+    }
+    
+    .tarjeta-bienvenida-glass {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+    }
+    
+    .seccion-simulador h1,
+    .titulo-seccion {
+        font-size: 1.6rem;
+    }
+    
+    .grid-resumen-kpi,
+    .grid-acciones-rapidas {
+        grid-template-columns: 1fr;
+    }
+    
+    .contenido-pie {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
 }

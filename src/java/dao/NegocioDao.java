@@ -120,7 +120,7 @@ public class NegocioDao {
                     n.setIdUsuario(rs.getInt("id_usuario"));
                     n.setNombreNegocio(rs.getString("nombre_negocio"));
                     n.setTipoNegocio(rs.getString("tipo_negocio"));
-                    n.setCapitalInicialInvertido(rs.getBigDecimal("capital_inicial_invertido")); // Verifica si en tu BD dice initial o inicial
+                    n.setCapitalInicialInvertido(rs.getBigDecimal("capital_inicial_invertido")); 
                     n.setBalanceActual(rs.getBigDecimal("balance_actual"));
                     n.setGananciaEsperada(rs.getBigDecimal("ganancia_esperada"));
                     n.setRegion(rs.getString("region"));
@@ -137,6 +137,65 @@ public class NegocioDao {
         return lista;
     }
     
- 
+    public List<negocio> listarTodosLosNegociosTest() {
+    List<negocio> lista = new ArrayList<>();
+    // Usamos 'negocio' en minúsculas por si acaso
+    String sql = "SELECT * FROM negocio"; 
+    
+    try (Connection conn = ConexionBD.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        
+        while (rs.next()) {
+            negocio n = new negocio();
+            n.setIdNegocio(rs.getInt("id_negocio"));
+            n.setNombreNegocio(rs.getString("nombre_negocio"));
+            
+            // Usamos un bloque try-catch interno para cada columna delicada.
+            // Si 'tipo_negocio' o el capital fallan, ¡el negocio se agregará de todos modos!
+            try {
+                n.setTipoNegocio(rs.getString("tipo_negocio"));
+            } catch (Exception e) {
+                n.setTipoNegocio("Desconocido");
+            }
+            
+            lista.add(n);
+        }
+    } catch (SQLException e) {
+        System.out.println("❌ ERROR CRÍTICO EN TEST: " + e.getMessage());
+        e.printStackTrace();
+    }
+    return lista;
+}
+    
+ // 🔍 NUEVO MÉTODO SELECT POR ID (Faltante para resolver tu error)
+    public negocio buscarPorId(int idNegocio) {
+        String sql = "SELECT * FROM Negocio WHERE id_negocio = ?";
+        try (Connection conn = ConexionBD.getConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, idNegocio);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    negocio n = new negocio();
+                    n.setIdNegocio(rs.getInt("id_negocio"));
+                    n.setIdUsuario(rs.getInt("id_usuario"));
+                    n.setNombreNegocio(rs.getString("nombre_negocio"));
+                    n.setTipoNegocio(rs.getString("tipo_negocio"));
+                    n.setCapitalInicialInvertido(rs.getBigDecimal("capital_inicial_invertido"));
+                    n.setBalanceActual(rs.getBigDecimal("balance_actual"));
+                    n.setGananciaEsperada(rs.getBigDecimal("ganancia_esperada"));
+                    n.setRegion(rs.getString("region"));
+                    n.setNivelRiesgo(rs.getString("nivel_riesgo"));
+                    n.setTiempoActivoDias(rs.getInt("tiempo_activo_dias"));
+                    return n; // Retorna el negocio encontrado
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("❌ Error en NegocioDao.buscarPorId: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null; // Si no lo encuentra, retorna null de forma segura
+    }
 }
     

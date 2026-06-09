@@ -12,7 +12,6 @@
         
         <div class="contenedor-principal">
             
-            <!-- Barra Superior de Navegación -->
             <div class="barra-superior">
                 <div class="logo">
                     <i class="fa-solid fa-cubes-stacked"></i> MicroBiz
@@ -65,10 +64,8 @@
                 </div>
             </div>
 
-            <!-- Contenido Central Enfocado -->
             <div class="contenido-pagina">
                 <br><br>
-                <!-- ENCABEZADO CENTRADO -->
                 <div class="modulo-header">
                     <h2>Negocio</h2>
                     <p>Gestiona los ciclos operativos, estatus y control de tu empresa simulada.</p>
@@ -84,7 +81,6 @@
         }
     %>
                 <br><br><br><br>
-                <!-- Panel de Control de Tarjetas -->
                 <div class="panel-control-negocio">
                     <a href="crear_negocio.jsp" class="tarjeta-control">
                         <i class="fa-solid fa-circle-plus" style="color: #10B981;"></i>
@@ -108,7 +104,6 @@
                 </div>
             </div>
             
-            <!-- Pie de Página Estable -->
             <div class="pie-pagina">
                 <div class="contenido-pie">
                     <div class="pie-izquierdo">

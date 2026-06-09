@@ -1,0 +1,244 @@
+/* ==========================================================================
+   1. CONTENEDOR ESTRUCTURAL Y CORRECCIÓN DE FLUJO
+   ========================================================================== */
+
+.contenedor-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Controla el espaciado vertical de los bloques de forma nativa */
+}
+
+/* Neutraliza los saltos de línea innecesarios heredados del JSP */
+.contenedor-dashboard br,
+.contenido-pagina br {
+    display: none;
+}
+
+/* ==========================================================================
+   2. ENCABEZADOS Y TEXTOS (DISEÑO CORPORATIVO)
+   ========================================================================== */
+
+.encabezado-seccion {
+    margin-bottom: 5px;
+}
+
+.titulo-seccion {
+    font-size: 2rem;
+    color: #111133;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.subtitulo-dashboard {
+    font-size: 1.25rem;
+    color: #111133;
+    font-weight: 700;
+    margin: 15px 0 5px 0;
+}
+
+/* ==========================================================================
+   3. PANELES ESTILO GLASSMORPHISM (CRISTAL TRANSLÚCIDO)
+   ========================================================================== */
+
+/* Tarjeta de bienvenida */
+.tarjeta-bienvenida-glass {
+    background-color: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 16px;
+    padding: 20px 25px;
+    box-shadow: 0 8px 32px 0 rgba(124, 58, 237, 0.08);
+}
+
+.info-jugador h2 {
+    font-size: 1.5rem;
+    color: #7C3AED; /* Morado vibrante de tu paleta */
+    margin-bottom: 6px;
+    font-weight: 700;
+}
+
+.info-jugador p {
+    color: #222244;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Tarjeta del Formulario (Simulador) */
+.tarjeta-simulacion {
+    background-color: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 16px;
+    padding: 20px 25px;
+    box-shadow: 0 8px 32px 0 rgba(124, 58, 237, 0.05);
+}
+
+.tarjeta-simulacion h2 {
+    font-size: 1.3rem;
+    color: #111133;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.tarjeta-simulacion label {
+    font-size: 0.88rem;
+    color: #222244;
+    font-weight: 600;
+}
+
+.tarjeta-simulacion select {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(124, 58, 237, 0.2);
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    color: #111133;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.tarjeta-simulacion select:focus {
+    border-color: #7C3AED;
+}
+
+/* Botón de acción principal */
+.btn-sim-crear {
+    background-color: #7C3AED;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-sim-crear:hover {
+    background-color: #6d28d9;
+    transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   4. SECCIÓN DE RECUADROS INTERACTIVOS (GRID DE BOTONES)
+   ========================================================================== */
+
+/* Grid de Resumen KPIs */
+.grid-resumen-kpi {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px;
+}
+
+.tarjeta-kpi-boton {
+    background-color: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 14px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta-kpi-boton:hover {
+    transform: translateY(-3px);
+    background-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.12);
+}
+
+/* Esferas de los Iconos */
+.kpi-icono {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+/* Variaciones cromáticas sólidas para los iconos */
+.color-azul { background-color: #e0f2fe; color: #0369a1; }
+.color-rojo { background-color: #fee2e2; color: #b91c1c; }
+.color-oro  { background-color: #fef3c7; color: #b45309; }
+
+.kpi-info h3 {
+    font-size: 1.15rem;
+    color: #111133;
+    margin: 0;
+    font-weight: 700;
+}
+
+.kpi-info p {
+    color: #4b5563;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+/* ==========================================================================
+   5. GRID DE ACCIONES RÁPIDAS
+   ========================================================================== */
+
+.grid-acciones-rapidas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 15px;
+}
+
+.bloque-accion-acceso {
+    background-color: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-decoration: none;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.bloque-accion-acceso:hover {
+    transform: translateY(-2px);
+    background-color: rgba(255, 255, 255, 0.85);
+}
+
+.bloque-accion-acceso i {
+    font-size: 1.3rem;
+    margin-top: 2px;
+}
+
+.accion-texto h4 {
+    font-size: 0.95rem;
+    color: #111133;
+    margin-bottom: 2px;
+    font-weight: 700;
+}
+
+.accion-texto p {
+    color: #4b5563;
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+/* ==========================================================================
+   6. AJUSTE RESPONSIVO
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .grid-resumen-kpi,
+    .grid-acciones-rapidas {
+        grid-template-columns: 1fr;
+    }
+}
+

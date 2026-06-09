@@ -1,4 +1,74 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="dao.NegocioDao"%>
+<%@page import="dao.CreditoDao"%>
+<%@page import="model.negocio"%>
+<%@page import="model.Credito"%>
+<%@page import="java.util.List"%>
+<%@page import="java.math.BigDecimal"%>
+<%@page import="java.math.RoundingMode"%>
+
+<%
+    
+    
+    // Cambiamos 'idUsuario' por 'usuarioLogueado' para coincidir con tu LoginServlet
+    // Suponiendo que 'usuarioLogueado' guarda un objeto Usuario, extraemos el ID
+    model.usuario user = (model.usuario) session.getAttribute("usuarioLogueado");
+
+    if (user == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+    
+    int idUsuario = user.getIdUsuario(); // O como se llame el método para obtener el ID
+    
+    // ... el resto de tu código sigue igual
+    
+    // 2. Inicialización de DAOs
+    NegocioDao negDao = new NegocioDao();
+    CreditoDao creDao = new CreditoDao();
+    
+    // 3. Cargar negocios del usuario REAL
+    List<model.negocio> listaNegocios = negDao.listarPorUsuario(idUsuario);
+    
+    // Debug para verificar
+    System.out.println("DEBUG: Usuario logueado ID: " + idUsuario);
+    System.out.println("DEBUG: Negocios encontrados: " + (listaNegocios != null ? listaNegocios.size() : 0));
+ 
+    
+    // 3. Capturar negocio seleccionado
+    String idNegParam = request.getParameter("idNegocio");
+    model.negocio negocioSeleccionado = null;
+    List<Credito> listaCreditos = null;
+
+    // Variables para los stats
+    BigDecimal deudaTotal = BigDecimal.ZERO;
+    BigDecimal interesPromedio = BigDecimal.ZERO;
+    int prestamosActivosCount = 0;
+
+    if (idNegParam != null && !idNegParam.isEmpty()) {
+        try {
+            int idNeg = Integer.parseInt(idNegParam);
+            negocioSeleccionado = negDao.buscarPorId(idNeg);
+            
+            // Aquí cargamos los créditos de ESE negocio específico
+            listaCreditos = creDao.listarPorNegocio(idNeg); 
+
+            if (listaCreditos != null && !listaCreditos.isEmpty()) {
+                prestamosActivosCount = listaCreditos.size();
+                BigDecimal sumaInteres = BigDecimal.ZERO;
+                for (Credito c : listaCreditos) {
+                    deudaTotal = deudaTotal.add(c.getMontoRestante());
+                    sumaInteres = sumaInteres.add(c.getTasaInteres());
+                }
+                interesPromedio = sumaInteres.divide(new BigDecimal(prestamosActivosCount), 2, RoundingMode.HALF_UP);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Error al procesar ID de negocio: " + e.getMessage());
+        }
+    }
+    System.out.println("DEBUG: Negocios cargados: " + (listaNegocios != null ? listaNegocios.size() : "NULL"));
+    System.out.println("DEBUG: ID Usuario en sesión: " + idUsuario);
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,12 +76,38 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <link rel="stylesheet" href="newcss.css">
-        <link rel="stylesheet" href="Credito.css">
-    </head>
-    <body style="height: 100vh; overflow: hidden; margin: 0; padding: 0;">
-        <div class="contenedor-principal" style="height: 100vh; display: flex; flex-direction: column; overflow: hidden;">
+        <link rel="stylesheet" href="newcss.css"> <link rel="stylesheet" href="Credito.css"> 
+        <script>
+    function cambiarNegocio() {
+        const id = document.getElementById("selNegocio").value;
+        window.location.href = "credito.jsp?idNegocio=" + id;
+    }
 
+    // CORRECCIÓN en tu script dentro de credito.jsp
+function pagarParcial(idCredito) {
+    const idNeg = "<%= idNegParam %>";
+    
+    // Pedimos al usuario que ingrese el monto
+    const monto = prompt("¿Cuánto deseas abonar a este crédito?", "100");
+    
+    // Si el usuario presiona "Cancelar" o deja el campo vacío, no hacemos nada
+    if (monto !== null && monto !== "") {
+        window.location.href = "CreditoServlet?accion=abonar&idCredito=" + idCredito + 
+                               "&idNegocio=" + idNeg + 
+                               "&montoAbono=" + monto;
+    }
+}
+
+function liquidar(idCredito) {
+    if(confirm("¿Estás seguro de que deseas liquidar este crédito totalmente?")) {
+        const idNeg = "<%= idNegParam %>";
+        window.location.href = "CreditoServlet?accion=liquidar&idCredito=" + idCredito + "&idNegocio=" + idNeg;
+    }
+}
+</script>
+    </head>
+    <body>
+        <div class="contenedor-principal">
             <div class="barra-superior" style="height: 75px; flex-shrink: 0;">
                 <div class="logo">
                     <i class="fa-solid fa-cubes-stacked"></i> MicroBiz
@@ -55,148 +151,125 @@
             </div>
             
 
-            <div class="contenido-pagina credito-pagina" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 20px 40px; box-sizing: border-box; overflow: hidden;">
+           <div class="contenido-pagina">
+            
+            <div class="contenedor-stats-credito">
+                <div class="card-stat">
+                    <small>Saldo actual</small>
+                    <h2 class="<%= (negocioSeleccionado != null && negocioSeleccionado.getBalanceActual().doubleValue() < 0) ? "texto-rojo" : "texto-verde" %>">
+                        $<%= (negocioSeleccionado != null) ? negocioSeleccionado.getBalanceActual() : "0.00" %>
+                    </h2>
+                </div>
+                <div class="card-stat">
+                    <small>Deuda total</small>
+                    <h2 class="texto-naranja">$<%= deudaTotal %></h2>
+                </div>
+                <div class="card-stat">
+                    <small>Préstamos pedidos</small>
+                    <h2><%= prestamosActivosCount %></h2>
+                </div>
+                <div class="card-stat">
+                    <small>Interés promedio</small>
+                    <h2 class="texto-azul"><%= interesPromedio %>%</h2>
+                </div>
+            </div>
 
-                <section class="credito-encabezado" style="margin-bottom: 10px; flex-shrink: 0;">
-                    <div>
-                        <span class="etiqueta-seccion" style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #475569; font-weight: 700;">Financiamiento del negocio</span>
-                        <h1 style="font-size: 32px; color: #111133; font-weight: 800; margin: 2px 0 4px 0; letter-spacing: -1px;">Crédito</h1>
-                        <p style="font-size: 13.5px; color: #334155; max-width: 800px; line-height: 1.4; margin: 0;">
-                            Solicita préstamos cuando tu negocio se quede sin dinero, revisa tus deudas activas y decide pagarlas.
-                        </p>
+            <div class="dashboard-grid">
+                
+                <div class="panel-lateral">
+                    <div class="panel-holografico">
+                        <h3><i class="fa-solid fa-briefcase"></i> Negocio Activo</h3>
+                        <form action="credito.jsp" method="GET">
+    <select name="idNegocio" onchange="this.form.submit()" class="select-tech">
+        <option value="">Selecciona una empresa...</option>
+        <% 
+        if(listaNegocios != null) {
+            for(model.negocio n : listaNegocios) {
+                String selected = (idNegParam != null && idNegParam.equals(String.valueOf(n.getIdNegocio()))) ? "selected" : "";
+        %>
+                <option value="<%= n.getIdNegocio() %>" <%= selected %>>
+                    <%= n.getNombreNegocio() %>
+                </option>
+        <% 
+            } 
+        } 
+        %>
+    </select>
+</form>
                     </div>
-                </section>
 
-                <section class="credito-resumen" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 15px; flex-shrink: 0;">
-                    <div class="credito-metrica alerta">
-                        <i class="fa-solid fa-wallet"></i>
-                        <div>
-                            <span>Saldo actual</span>
-                            <strong>-$2,400</strong>
-                        </div>
-                    </div>
-                    <div class="credito-metrica">
-                        <i class="fa-solid fa-hand-holding-dollar"></i>
-                        <div>
-                            <span>Deuda total</span>
-                            <strong>$8,500</strong>
-                        </div>
-                    </div>
-                    <div class="credito-metrica">
-                        <i class="fa-solid fa-file-signature"></i>
-                        <div>
-                            <span>Préstamos pedidos</span>
-                            <strong>3</strong>
-                        </div>
-                    </div>
-                    <div class="credito-metrica">
-                        <i class="fa-solid fa-percent"></i>
-                        <div>
-                            <span>Interés promedio</span>
-                            <strong>12%</strong>
-                        </div>
-                    </div>
-                </section>
+                    <div class="panel-holografico margin-top">
+                        <h3>Solicitar préstamo</h3>
+                        <% if(negocioSeleccionado != null && negocioSeleccionado.getBalanceActual().doubleValue() < 0) { %>
+                            <div class="alerta-negativa">
+                                <i class="fa-solid fa-circle-exclamation"></i> Tu saldo es negativo. ¡Pide un crédito para sobrevivir!
+                            </div>
+                        <% } %>
 
-                <section class="credito-grid" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 20px; flex: 1; min-height: 0; margin-bottom: 15px;">
+                        <form action="CreditoServlet" method="POST" class="form-credito">
+                            <input type="hidden" name="accion" value="solicitar">
+                            <input type="hidden" name="idNegocio" value="<%= (negocioSeleccionado != null) ? negocioSeleccionado.getIdNegocio() : "" %>">
+                            
+                            <label>Monto solicitado</label>
+                            <input type="number" name="monto" placeholder="Ej. 5000" required <%= (negocioSeleccionado == null) ? "disabled" : "" %>>
+                            
+                            <label>Plazo y tasa de interés</label>
+<select name="plazo_y_tasa" <%= (negocioSeleccionado == null) ? "disabled" : "" %>>
+    <option value="5|10.0">5 Turnos (10% Interés)</option>
+    <option value="10|15.0">10 Turnos (15% Interés)</option>
+    <option value="20|25.0">20 Turnos (25% Interés)</option>
+</select>
+                            <input type="hidden" name="tasa" value="15.0"> <label>Motivo del préstamo</label>
+                            <input type="text" name="nombrePrestamo" placeholder="Ej. Compra de inventario" required <%= (negocioSeleccionado == null) ? "disabled" : "" %>>
 
-                    <div class="panel-credito" style="display: flex; flex-direction: column; justify-content: space-between; padding: 20px; height: 100%; box-sizing: border-box;">
-                        <h2 style="margin-bottom: 10px; margin-top: 0;">Solicitar préstamo</h2>
-
-                        <div class="credito-aviso" style="margin-bottom: 12px; padding: 10px;">
-                            <i class="fa-solid fa-circle-exclamation"></i>
-                            <p style="margin: 0; font-size: 12px;">
-                                Tu saldo está en números negativos. Puedes pedir un préstamo para continuar operando.
-                            </p>
-                        </div>
-
-                        <form class="formulario-credito" style="display: flex; flex-direction: column; gap: 10px; flex: 1; justify-content: center;">
-                            <label style="margin: 0;">
-                                Monto solicitado
-                                <input type="number" placeholder="Ej. 5000" style="margin-top: 3px; padding: 8px 12px;">
-                            </label>
-
-                            <label style="margin: 0;">
-                                Plazo de pago
-                                <select style="margin-top: 3px; padding: 8px 12px;">
-                                    <option>3 turnos</option>
-                                    <option>6 turnos</option>
-                                    <option>9 turnos</option>
-                                </select>
-                            </label>
-
-                            <label style="margin: 0;">
-                                Motivo del préstamo
-                                <select style="margin-top: 3px; padding: 8px 12px;">
-                                    <option>Comprar inventario</option>
-                                    <option>Pagar deuda urgente</option>
-                                    <option>Invertir en publicidad</option>
-                                    <option>Cubrir saldo negativo</option>
-                                </select>
-                            </label>
-
-                            <button type="button" class="btn-credito-principal" style="margin-top: 8px; padding: 10px;">
+                            <button type="submit" class="btn-primary" <%= (negocioSeleccionado == null) ? "disabled" : "" %>>
                                 <i class="fa-solid fa-plus"></i> Crear préstamo
                             </button>
                         </form>
                     </div>
+                </div>
 
-                    <div class="panel-credito" style="padding: 20px; height: 100%; box-sizing: border-box; display: flex; flex-direction: column;">
-                        <h2 style="margin-bottom: 12px; margin-top: 0; flex-shrink: 0;">Préstamos activos</h2>
-                        
-                        <div style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px;">
-                            <article class="prestamo-card" style="margin: 0; padding: 12px;">
-                                <div class="prestamo-info">
-                                    <i class="fa-solid fa-building-columns"></i>
-                                    <div>
-                                        <h3>Préstamo de emergencia</h3>
-                                        <p>Restan $3,200 de $5,000</p>
-                                        <span>Interés: 10% · Vence en 2 turnos</span>
-                                    </div>
-                                </div>
-                                <div class="prestamo-acciones">
-                                    <button type="button">Pagar parte</button>
-                                    <button type="button">Pagar todo</button>
-                                </div>
-                            </article>
+                <div class="panel-principal">
+    <h3>Préstamos Activos</h3>
+    
+    <%-- Si la lista está vacía, mostramos un mensaje estético --%>
+    <% if(listaCreditos == null || listaCreditos.isEmpty()) { %>
+        <div class="aviso-vacio">
+            <i class="fa-solid fa-circle-info"></i>
+            <p>No hay créditos activos asociados a este negocio.</p>
+        </div>
+    <% } else { 
+        for(Credito c : listaCreditos) { %>
+            <div class="tarjeta-prestamo">
+                <div class="info-prestamo">
+                    <h4><%= c.getNombrePrestamo() %></h4>
+                    <span class="monto-restante">$<%= c.getMontoRestante() %></span>
+                    <p>de $<%= c.getMontoSolicitado() %> original</p>
+                </div>
+                
+                <div class="detalles-tecnicos">
+                    <small>Interés: <%= c.getTasaInteres() %>%</small>
+                    <small>Turnos: <%= c.getTurnosRestantes() %> / <%= c.getPlazoTurnos() %></small>
+                </div>
 
-                            <article class="prestamo-card" style="margin: 0; padding: 12px;">
-                                <div class="prestamo-info">
-                                    <i class="fa-solid fa-boxes-stacked"></i>
-                                    <div>
-                                        <h3>Compra de inventario</h3>
-                                        <p>Restan $4,100 de $6,000</p>
-                                        <span>Interés: 14% · Vence en 4 turnos</span>
-                                    </div>
-                                </div>
-                                <div class="prestamo-acciones">
-                                    <button type="button">Pagar parte</button>
-                                    <button type="button">Pagar todo</button>
-                                </div>
-                            </article>
-
-                            <article class="prestamo-card" style="margin: 0; padding: 12px;">
-                                <div class="prestamo-info">
-                                    <i class="fa-solid fa-bullhorn"></i>
-                                    <div>
-                                        <h3>Campaña publicitaria</h3>
-                                        <p>Restan $1,200 de $2,000</p>
-                                        <span>Interés: 12% · Vence en 1 turno</span>
-                                    </div>
-                                </div>
-                                <div class="prestamo-acciones">
-                                    <button type="button">Pagar parte</button>
-                                    <button type="button">Pagar todo</button>
-                                </div>
-                            </article>
-                        </div>
-                    </div>
-
-                </section>
+                <%-- Dentro de tu bucle for(Credito c : listaCreditos) --%>
+<div class="acciones-prestamo">
+    <% if(c.getTurnosRestantes() > 0) { %>
+        <button class="btn-secundario" onclick="pagarParcial(<%= c.getIdCredito() %>)">Pagar Parte</button>
+        <button class="btn-primario" onclick="liquidar(<%= c.getIdCredito() %>)">Liquidar</button>
+    <% } else { %>
+        <span class="texto-verde">Crédito liquidado</span>
+    <% } %>
+</div>
+            </div>
+    <%  } 
+    } %>
+</div>
 
             </div>
+        </div>
 
-            <div class="pie-pagina" style="height: 65px; flex-shrink: 0; display: flex; align-items: center;">
+ <div class="pie-pagina">
                 <div class="contenido-pie">
                     <div class="pie-izquierdo">
                         <strong>Sobre nosotros</strong><br>
@@ -208,6 +281,6 @@
                 </div>
             </div>
 
-        </div>
-    </body>
+    </div>
+</body>
 </html>

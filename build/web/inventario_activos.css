@@ -235,6 +235,34 @@ body::after { bottom: -50px; left: 15%; background: #3B82F6; }
     gap: 4px;
 }
 
+
+.badge-area {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+/* Área Producción - Morado Eléctrico */
+.badge-producción, .badge-produccion {
+    background: rgba(168, 85, 247, 0.12);
+    color: #a855f7;
+    border: 1px solid rgba(168, 85, 247, 0.25);
+}
+/* Área Ventas y Marketing - Verde Cripto/Esmeralda */
+.badge-ventas {
+    background: rgba(16, 185, 129, 0.12);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+}
+/* Área Logística y Almacén - Ámbar/Naranja Neón */
+.badge-logística, .badge-logistica {
+    background: rgba(245, 158, 11, 0.12);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.25);
+}
 /* ==========================================================================
    5. PIE DE PÁGINA ULTRA-ESTABLE (CONGELADO)
    ========================================================================== */

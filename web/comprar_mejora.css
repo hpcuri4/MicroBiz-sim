@@ -1,59 +1,4 @@
-/* ==========================================================================
-   1. CONFIGURACIÓN BASE Y REINICIO (RESET)
-   ========================================================================== */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-}
 
-body, html {
-    height: 100%;
-    background-color: #A9A8F5; /* Color base morado */
-    position: relative;
-    overflow-x: hidden;
-}
-
-/* ==========================================================================
-   2. ESFERAS DE FONDO ANIMADAS (EFECTO INTERFAZ MODERNA)
-   ========================================================================== */
-body::before, body::after {
-    content: '';
-    position: fixed;
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    filter: blur(100px); /* Difumina las esferas por completo */
-    z-index: -1;         /* Las manda al fondo */
-    opacity: 0.6;
-}
-
-body::before {
-    top: -100px;
-    right: 10%;
-    background: #7C3AED;
-    animation: flotar 10s ease-in-out infinite;
-}
-
-body::after {
-    bottom: -50px;
-    left: 15%;
-    background: #3B82F6;
-    animation: flotarInverso 12s ease-in-out infinite;
-}
-
-@keyframes flotar {
-    0%   { transform: translateY(0px); }
-    50%  { transform: translateY(-18px); }
-    100% { transform: translateY(0px); }
-}
-
-@keyframes flotarInverso {
-    0%   { transform: translateY(0px); }
-    50%  { transform: translateY(18px); }
-    100% { transform: translateY(0px); }
-}
 
 /* ==========================================================================
    3. ESTRUCTURA GENERAL Y BARRA SUPERIOR (GLASSMORPHISM)
@@ -61,9 +6,8 @@ body::after {
 .contenedor-principal {
     display: flex;
     flex-direction: column;
-    min-height: 100%;
-    position: relative;
-    z-index: 1;
+    height: 100vh; /* Ocupa el 100% del alto de la ventana visible */
+    overflow: hidden; /* Evita que la página completa genere scroll */
 }
 
 .barra-superior {
@@ -373,33 +317,3 @@ body::after {
 /* ==========================================================================
    7. PIE DE PÁGINA
    ========================================================================== */
-.pie-pagina {
-    background-color: #111133;
-    color: #FFFFFF;
-    padding: 25px 40px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.contenido-pie {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
-}
-
-.pie-izquierdo {
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-.pie-derecho {
-    color: #A2A2B5;
-    font-size: 13px;
-}
-
-.correo-pie {
-    color: #C4C3FF;
-    font-weight: 500;
-}
